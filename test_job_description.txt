@@ -1,0 +1,40 @@
+Job Description
+
+Position: Full Stack Developer
+Company: Tech Innovations Inc.
+Location: Remote
+
+ABOUT THE ROLE
+We are seeking an experienced Full Stack Developer to join our growing team.
+
+REQUIREMENTS
+- 3+ years of experience in software development
+- Strong proficiency in React.js and modern JavaScript frameworks
+- Experience with Node.js and Express.js for backend development
+- Knowledge of MongoDB or other NoSQL databases
+- Familiarity with RESTful API design and implementation
+- Experience with version control systems (Git)
+- Understanding of Agile development methodologies
+
+PREFERRED QUALIFICATIONS
+- Experience with Docker and containerization
+- Knowledge of AWS cloud services
+- Experience with CI/CD pipelines
+- Team leadership experience
+- Excellent communication skills
+- Problem-solving abilities
+
+RESPONSIBILITIES
+- Design and develop scalable web applications
+- Write clean, maintainable code
+- Collaborate with cross-functional teams
+- Participate in code reviews
+- Mentor junior developers
+- Implement best practices and coding standards
+
+BENEFITS
+- Competitive salary
+- Health insurance
+- Remote work flexibility
+- Professional development opportunities
+- Modern tech stack

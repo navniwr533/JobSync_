@@ -1,0 +1,37 @@
+Sample Resume
+
+John Doe
+john.doe@email.com
+(123) 456-7890
+
+PROFESSIONAL SUMMARY
+Experienced software developer with 5 years in full-stack development.
+
+EXPERIENCE
+Senior Developer - Tech Corp (2020-2025)
+- Developed web applications using React.js and Node.js
+- Implemented RESTful APIs with Express.js
+- Worked with MongoDB databases
+- Led a team of 3 developers
+- Improved application performance by 40%
+
+Junior Developer - StartupXYZ (2018-2020)
+- Built responsive websites using HTML, CSS, JavaScript
+- Collaborated with designers and product managers
+- Implemented agile methodologies
+
+EDUCATION
+Bachelor of Science in Computer Science
+State University, 2018
+
+SKILLS
+- Programming: JavaScript, Python, Java
+- Frontend: React.js, HTML5, CSS3, TailwindCSS
+- Backend: Node.js, Express.js
+- Database: MongoDB, PostgreSQL, MySQL
+- Tools: Git, Docker, AWS
+- Soft Skills: Team Leadership, Communication, Problem Solving
+
+CERTIFICATIONS
+- AWS Certified Developer
+- MongoDB Certified Professional

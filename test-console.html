@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobSync Testing Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-8">
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">JobSync Testing Console</h1>
+        
+        <div class="bg-gray-800 p-6 rounded-lg mb-6">
+            <h2 class="text-xl font-semibold mb-4">Database Controls</h2>
+            <div class="space-y-3">
+                <button onclick="clearAllData()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded mr-2">
+                    Clear All Data (Fresh Start)
+                </button>
+                <button onclick="checkData()" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded mr-2">
+                    Check Current Data
+                </button>
+                <button onclick="createTestUser()" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded">
+                    Create Test User
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-lg mb-6">
+            <h2 class="text-xl font-semibold mb-4">Test Scenarios</h2>
+            <div class="space-y-3">
+                <button onclick="testNewUserFlow()" class="bg-purple-500 hover:bg-purple-600 px-4 py-2 rounded mr-2">
+                    Test New User Flow
+                </button>
+                <button onclick="testResumeUpload()" class="bg-teal-500 hover:bg-teal-600 px-4 py-2 rounded mr-2">
+                    Test Resume Upload
+                </button>
+                <button onclick="testInterviewCompletion()" class="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded">
+                    Test Interview Completion
+                </button>
+            </div>
+        </div>
+
+        <div id="testOutput" class="bg-gray-800 p-6 rounded-lg">
+            <h2 class="text-xl font-semibold mb-4">Test Output</h2>
+            <pre id="output" class="text-sm text-gray-300 overflow-auto max-h-96"></pre>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            output.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function clearAllData() {
+            localStorage.clear();
+            log('All localStorage data cleared', 'success');
+            log('Application reset to fresh state', 'info');
+        }
+
+        function checkData() {
+            log('=== Current Data State ===', 'info');
+            
+            const users = localStorage.getItem('jobsync_users');
+            const currentUser = localStorage.getItem('jobsync_current_user');
+            
+            if (users) {
+                const parsedUsers = JSON.parse(users);
+                log(`Users in database: ${Object.keys(parsedUsers).length}`, 'info');
+                
+                Object.keys(parsedUsers).forEach(email => {
+                    const user = parsedUsers[email];
+                    log(`  - ${email}:`, 'info');
+                    log(`    Resume analyses: ${user.resumeAnalyses?.length || 0}`, 'info');
+                    log(`    Interview results: ${user.interviewResults?.length || 0}`, 'info');
+                    log(`    Progress entries: ${user.progress?.length || 0}`, 'info');
+                });
+            } else {
+                log('No users in database', 'info');
+            }
+            
+            if (currentUser) {
+                const user = JSON.parse(currentUser);
+                log(`Current logged in user: ${user.email}`, 'success');
+            } else {
+                log('No user currently logged in', 'info');
+            }
+        }
+
+        function createTestUser() {
+            const testEmail = 'test@jobsync.com';
+            const testPassword = 'Test123!';
+            
+            const users = JSON.parse(localStorage.getItem('jobsync_users') || '{}');
+            
+            if (users[testEmail]) {
+                log('Test user already exists', 'error');
+                return;
+            }
+            
+            users[testEmail] = {
+                email: testEmail,
+                password: testPassword,
+                name: 'Test User',
+                createdAt: new Date().toISOString(),
+                resumeAnalyses: [],
+                interviewResults: [],
+                progress: []
+            };
+            
+            localStorage.setItem('jobsync_users', JSON.stringify(users));
+            log(`Test user created: ${testEmail} / ${testPassword}`, 'success');
+        }
+
+        function testNewUserFlow() {
+            log('=== Testing New User Flow ===', 'info');
+            clearAllData();
+            log('Step 1: Cleared all data', 'success');
+            
+            createTestUser();
+            log('Step 2: Created test user', 'success');
+            
+            const users = JSON.parse(localStorage.getItem('jobsync_users'));
+            const testUser = users['test@jobsync.com'];
+            
+            // Verify empty state
+            if (testUser.resumeAnalyses.length === 0) {
+                log('✓ Resume analyses: Empty (correct)', 'success');
+            } else {
+                log('✗ Resume analyses: Has data (WRONG!)', 'error');
+            }
+            
+            if (testUser.interviewResults.length === 0) {
+                log('✓ Interview results: Empty (correct)', 'success');
+            } else {
+                log('✗ Interview results: Has data (WRONG!)', 'error');
+            }
+            
+            if (testUser.progress.length === 0) {
+                log('✓ Progress: Empty (correct)', 'success');
+            } else {
+                log('✗ Progress: Has data (WRONG!)', 'error');
+            }
+            
+            log('New user should see empty states in dashboard', 'info');
+            log('Open jobSync.html and login with test@jobsync.com / Test123!', 'info');
+        }
+
+        function testResumeUpload() {
+            log('=== Testing Resume Upload Flow ===', 'info');
+            
+            const currentUser = localStorage.getItem('jobsync_current_user');
+            if (!currentUser) {
+                log('No user logged in. Please login first.', 'error');
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            log(`Testing with user: ${user.email}`, 'info');
+            
+            // Simulate resume analysis
+            const mockAnalysis = {
+                fileName: 'test_resume.pdf',
+                jdFileName: 'test_job_description.pdf',
+                overallScore: 75,
+                atsScore: 80,
+                keywordScore: 70,
+                experienceScore: 75,
+                skillGaps: [
+                    { name: 'React.js', current: 60, required: 80, gap: 20 },
+                    { name: 'Node.js', current: 40, required: 80, gap: 40 },
+                    { name: 'MongoDB', current: 30, required: 80, gap: 50 }
+                ],
+                timestamp: new Date().toISOString()
+            };
+            
+            const users = JSON.parse(localStorage.getItem('jobsync_users'));
+            if (!users[user.email].resumeAnalyses) {
+                users[user.email].resumeAnalyses = [];
+            }
+            users[user.email].resumeAnalyses.push(mockAnalysis);
+            
+            if (!users[user.email].progress) {
+                users[user.email].progress = [];
+            }
+            users[user.email].progress.push({
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                resumeScore: 75,
+                interviewScore: 0,
+                overallScore: 75,
+                timestamp: new Date().toISOString()
+            });
+            
+            localStorage.setItem('jobsync_users', JSON.stringify(users));
+            
+            user.resumeAnalyses = users[user.email].resumeAnalyses;
+            user.progress = users[user.email].progress;
+            localStorage.setItem('jobsync_current_user', JSON.stringify(user));
+            
+            log('Mock resume analysis created', 'success');
+            log('Overall Score: 75%', 'info');
+            log('Skill Gaps: 3 identified', 'info');
+            log('Progress entry added', 'success');
+            log('Refresh dashboard to see updated charts', 'info');
+        }
+
+        function testInterviewCompletion() {
+            log('=== Testing Interview Completion Flow ===', 'info');
+            
+            const currentUser = localStorage.getItem('jobsync_current_user');
+            if (!currentUser) {
+                log('No user logged in. Please login first.', 'error');
+                return;
+            }
+            
+            const user = JSON.parse(currentUser);
+            log(`Testing with user: ${user.email}`, 'info');
+            
+            // Simulate interview results
+            const mockResults = {
+                type: 'technical',
+                totalQuestions: 5,
+                answeredQuestions: 5,
+                scores: {
+                    overall: 82,
+                    clarity: 80,
+                    structure: 85,
+                    confidence: 81
+                },
+                completedAt: new Date().toISOString()
+            };
+            
+            const users = JSON.parse(localStorage.getItem('jobsync_users'));
+            if (!users[user.email].interviewResults) {
+                users[user.email].interviewResults = [];
+            }
+            users[user.email].interviewResults.push(mockResults);
+            
+            if (!users[user.email].progress) {
+                users[user.email].progress = [];
+            }
+            users[user.email].progress.push({
+                date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                resumeScore: 0,
+                interviewScore: 82,
+                overallScore: 82,
+                timestamp: new Date().toISOString()
+            });
+            
+            localStorage.setItem('jobsync_users', JSON.stringify(users));
+            
+            user.interviewResults = users[user.email].interviewResults;
+            user.progress = users[user.email].progress;
+            localStorage.setItem('jobsync_current_user', JSON.stringify(user));
+            
+            log('Mock interview results created', 'success');
+            log('Overall Score: 82%', 'info');
+            log('Type: Technical Interview', 'info');
+            log('Progress entry added', 'success');
+            log('Refresh dashboard to see updated charts', 'info');
+        }
+
+        // Initialize
+        log('JobSync Testing Console Ready', 'success');
+        log('Use buttons above to test different scenarios', 'info');
+    </script>
+</body>
+</html>

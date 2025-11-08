@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JOB SYNC — AI-Powered Job Readiness & Career Gap Analyzer</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Configure Tailwind for the "Inter" font -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary-blue": "#0A74DA", // Strong Blue for CTAs
+              "primary-dark": "#0F172A", // Slate/Dark Blue for background
+              "secondary-teal": "#14B8A6", // Teal for accents
+              "card-bg": "#1E293B", // Dark Slate for cards
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Global Style Enhancements */
+      html {
+        scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+      }
+      /* Import Inter font from Google Fonts */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+      /* Custom animation for professional hover effect */
+      .card-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2),
+          0 4px 6px -2px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Styling for the modal transition */
+      .modal-transition {
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      .modal-transition-active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* Loading indicator CSS */
+      #global-loading {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(15, 23, 42, 0.9); /* primary-dark with transparency */
+        z-index: 1000;
+        display: none; /* Hidden by default */
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-top: 4px solid #14b8a6; /* secondary-teal */
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Simple progress bar animation */
+      .progress-bar-inner {
+        transition: width 0.5s ease-in-out;
+      }
+    </style>
+  </head>
+  <body class="bg-primary-dark text-white font-sans antialiased">
+    <!-- Global Loading Overlay -->
+    <div id="global-loading">
+      <div class="spinner mb-4"></div>
+      <p id="loading-message" class="text-xl text-secondary-teal">
+        Initializing app...
+      </p>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header
+      class="sticky top-0 z-50 bg-primary-dark/95 backdrop-blur-sm border-b border-white/10"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
+      >
+        <!-- Logo -->
+        <a
+          href="#"
+          class="text-2xl font-bold text-secondary-teal flex items-center tracking-wide"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-6 h-6 mr-2"
+          >
+            <path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10z" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+          JOB SYNC
+        </a>
+
+        <!-- Desktop Links -->
+        <nav class="hidden md:flex space-x-6 text-gray-300">
+          <a href="#features" class="hover:text-primary-blue transition"
+            >Features</a
+          >
+          <a href="#resume-analysis" class="hover:text-primary-blue transition"
+            >Resume Analysis</a
+          >
+          <a href="#dashboard" class="hover:text-primary-blue transition"
+            >Analytics</a
+          >
+          <a href="#interview-prep" class="hover:text-primary-blue transition"
+            >Interview Prep</a
+          >
+          <a href="#team" class="hover:text-primary-blue transition"
+            >Team</a
+          >
+          <a href="#faq" class="hover:text-primary-blue transition">FAQ</a>
+        </nav>
+
+        <!-- Auth Controls (Login/Signup/Profile) -->
+        <div id="auth-controls" class="hidden md:flex items-center space-x-4">
+          <button
+            id="login-button"
+            class="text-gray-300 hover:text-primary-blue transition font-semibold"
+          >
+            Login
+          </button>
+          <button
+            id="signup-button"
+            class="bg-primary-blue hover:bg-primary-blue/90 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-lg shadow-primary-blue/30"
+          >
+            Sign Up
+          </button>
+        </div>
+
+        <!-- User Profile (Hidden by default) -->
+        <div id="user-profile" class="hidden md:flex items-center space-x-4">
+          <span
+            id="user-display"
+            class="text-secondary-teal text-sm font-mono p-1 rounded-md bg-card-bg/50"
+          ></span>
+          <button
+            id="logout-button"
+            class="bg-card-bg hover:bg-white/10 text-white font-semibold py-1.5 px-3 rounded-lg border border-white/20 transition duration-300"
+          >
+            Logout
+          </button>
+        </div>
+
+        <!-- Mobile Menu Button (Placeholder) -->
+        <button
+          class="md:hidden text-gray-300 hover:text-primary-blue transition"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="w-6 h-6"
+          >
+            <line x1="3" x2="21" y1="6" y2="6" />
+            <line x1="3" x2="21" y1="12" y2="12" />
+            <line x1="3" x2="21" y1="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Authentication Modal Overlay -->
+    <div
+      id="auth-modal"
+      class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center"
+    >
+      <!-- Modal Content -->
+      <div
+        id="modal-content"
+        class="modal-transition bg-card-bg p-8 rounded-xl w-full max-w-md shadow-2xl border border-white/20 relative"
+      >
+        <button
+          id="close-modal"
+          class="absolute top-4 right-4 text-gray-400 hover:text-white"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+        <h3
+          id="auth-title"
+          class="text-2xl font-bold mb-6 text-primary-blue text-center"
+        >
+          Login
+        </h3>
+        <div
+          id="error-message"
+          class="text-red-400 mb-4 hidden bg-red-900/30 p-2 rounded-md border border-red-700 text-sm"
+        ></div>
+
+        <form id="auth-form" class="space-y-4">
+          <!-- Name field (signup only) -->
+          <div id="name-field" class="hidden">
+            <label
+              for="name"
+              class="block text-sm font-medium text-gray-300 mb-1"
+              >Full Name</label
+            >
+            <input
+              type="text"
+              id="name"
+              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              autocomplete="name"
+            />
+          </div>
+          
+          <div>
+            <label
+              for="email"
+              class="block text-sm font-medium text-gray-300 mb-1"
+              >Email Address</label
+            >
+            <input
+              type="email"
+              id="email"
+              required
+              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              autocomplete="email"
+            />
+          </div>
+          
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-300 mb-1"
+              >Password</label
+            >
+            <input
+              type="password"
+              id="password"
+              required
+              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              autocomplete="current-password"
+            />
+          </div>
+          
+          <!-- Confirm password field (signup only) -->
+          <div id="confirm-password-field" class="hidden">
+            <label
+              for="confirm-password"
+              class="block text-sm font-medium text-gray-300 mb-1"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              id="confirm-password"
+              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              autocomplete="new-password"
+            />
+          </div>
+          
+          <!-- Terms checkbox (signup only) -->
+          <div id="terms-field" class="hidden">
+            <label class="flex items-start space-x-3 text-sm text-gray-300">
+              <input
+                type="checkbox"
+                id="terms"
+                class="mt-0.5 rounded border-white/10 bg-primary-dark text-secondary-teal focus:ring-secondary-teal"
+              />
+              <span>I agree to the <a href="#" class="text-secondary-teal hover:underline">Terms of Service</a> and <a href="#" class="text-secondary-teal hover:underline">Privacy Policy</a></span>
+            </label>
+          </div>
+          
+          <button
+            type="submit"
+            id="auth-submit"
+            class="w-full bg-secondary-teal hover:bg-secondary-teal/90 text-white font-bold py-3 rounded-lg transition duration-300"
+          >
+            Log In
+          </button>
+          <p class="text-center text-sm text-gray-400 mt-4">
+            <span
+              id="switch-auth-mode"
+              class="cursor-pointer text-primary-blue hover:text-primary-blue/80"
+            >
+              Need an account? Sign Up
+            </span>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- 1. Hero Section -->
+      <section
+        class="py-24 md:py-32 text-center bg-primary-dark border-b border-white/10"
+      >
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <span
+            class="text-secondary-teal uppercase tracking-[0.35em] text-sm font-medium mb-3 block"
+            >Introducing JOB SYNC</span
+          >
+          <h1
+            class="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-tight mb-6"
+          >
+            AI-Powered Job Readiness &amp;
+            <span class="text-primary-blue">Career Gap Analyzer</span>
+          </h1>
+          <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+            Diagnose how well your resume aligns with the role, surface hidden skill gaps, and get actionable guidance to move from applicant to hire.
+          </p>
+          <div
+            class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4"
+          >
+            <a
+              href="#resume-analysis"
+              class="bg-primary-blue hover:bg-primary-blue/90 text-white text-xl font-bold py-3 px-8 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-2xl shadow-primary-blue/40"
+            >
+              Analyze My Resume Now
+            </a>
+            <a
+              href="#features"
+              class="bg-card-bg hover:bg-card-bg/80 text-gray-300 text-xl font-semibold py-3 px-8 rounded-xl border border-white/20 transition duration-300 transform hover:scale-[1.02]"
+            >
+              Watch Features Demo
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Features Section -->
+      <section id="features" class="py-20 md:py-28 bg-primary-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">
+            Key Features to Supercharge Your Search
+          </h2>
+          <p class="text-xl text-gray-400 text-center mb-16">
+            Data-driven tools designed to cut your job search time in half.
+          </p>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <!-- Feature Card 1 -->
+            <div
+              class="bg-card-bg p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-10 h-10 text-secondary-teal mb-4"
+              >
+                <path d="M12 2v20" />
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+              <h3 class="text-xl font-semibold mb-3">
+                Resume Ranking Analysis
+              </h3>
+              <p class="text-gray-400">
+                Upload your JD and resume to get an objective score on how well
+                you map to the requirements, identifying critical keyword gaps.
+              </p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div
+              class="bg-card-bg p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-10 h-10 text-primary-blue mb-4"
+              >
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <h3 class="text-xl font-semibold mb-3">
+                Realistic AI Interview Prep
+              </h3>
+              <p class="text-gray-400">
+                Practice behavioral, technical, and situational questions
+                generated specifically from the job description and your
+                background.
+              </p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div
+              class="bg-card-bg p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-10 h-10 text-secondary-teal mb-4"
+              >
+                <path d="M2 12s3-4 8-4 5 10 9 2c-3 0-5.5-2-5.5-5" />
+                <path d="M12 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                <path
+                  d="M17 19c-1 0-3 0-5-3-2 3-4 3-5 3a7 7 0 0 1 0-14c4 0 5 4 6 4s1-4 6-4a7 7 0 0 1 0 14"
+                />
+              </svg>
+              <h3 class="text-xl font-semibold mb-3">Actionable Feedback</h3>
+              <p class="text-gray-400">
+                Stop getting generic tips. Get detailed, timestamped feedback on
+                your answers, communication clarity, and confidence.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Testimonials/Social Proof Section -->
+      <section
+        id="testimonials"
+        class="py-20 md:py-28 bg-card-bg border-t border-b border-white/10"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <span
+            class="text-primary-blue uppercase tracking-widest text-sm font-medium mb-3 block"
+            >Success Stories</span
+          >
+          <h2 class="text-3xl sm:text-4xl font-bold mb-12">
+            Don't Just Take Our Word For It
+          </h2>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div
+              class="bg-primary-dark p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
+            >
+              <p class="text-lg italic text-gray-300 mb-4">
+                "The resume ranking tool got me my first call back in months. I
+                fixed exactly what was broken!"
+              </p>
+              <div class="flex items-center justify-center">
+                <div
+                  class="w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-sm font-bold mr-3"
+                >
+                  JD
+                </div>
+                <div>
+                  <p class="font-semibold text-white">Jane Doe</p>
+                  <p class="text-sm text-secondary-teal">
+                    Product Manager, Google
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div
+              class="bg-primary-dark p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
+            >
+              <p class="text-lg italic text-gray-300 mb-4">
+                "The AI interview practice is terrifyingly real. It helped me
+                nail my behavioral round easily."
+              </p>
+              <div class="flex items-center justify-center">
+                <div
+                  class="w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-sm font-bold mr-3"
+                >
+                  MK
+                </div>
+                <div>
+                  <p class="font-semibold text-white">Mike K.</p>
+                  <p class="text-sm text-secondary-teal">
+                    Software Engineer, Amazon
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div
+              class="bg-primary-dark p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
+            >
+              <p class="text-lg italic text-gray-300 mb-4">
+                "Worth every penny. The JD mapping report is like getting the
+                answers to the hiring test beforehand."
+              </p>
+              <div class="flex items-center justify-center">
+                <div
+                  class="w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-sm font-bold mr-3"
+                >
+                  AW
+                </div>
+                <div>
+                  <p class="font-semibold text-white">Alice W.</p>
+                  <p class="text-sm text-secondary-teal">
+                    Data Scientist, Tesla
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Resume Analysis Section (NOW DYNAMIC) -->
+      <section
+        id="resume-analysis"
+        class="py-20 md:py-28 bg-primary-dark border-t border-white/10"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Login Required Message for Resume Analysis -->
+          <div id="resume-login-required" class="text-center mb-16">
+            <div class="bg-card-bg p-12 rounded-2xl border border-white/10">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-primary-blue">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10,9 9,9 8,9"/>
+              </svg>
+              <h3 class="text-2xl font-bold text-white mb-4">Login to Analyze Your Resume</h3>
+              <p class="text-gray-400 mb-6">Sign up or log in to upload your resume and get AI-powered analysis with ATS scoring, keyword optimization, and personalized recommendations.</p>
+              <button id="resume-login-btn" class="bg-primary-blue hover:bg-primary-blue/90 text-white px-8 py-3 rounded-lg font-semibold transition">
+                Sign Up / Login
+              </button>
+            </div>
+          </div>
+          
+          <!-- Actual Resume Analysis Content (hidden by default) -->
+          <div id="resume-analysis-content" class="hidden">
+          <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
+            <div class="order-2 md:order-1">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-primary-blue">
+                AI-Powered Resume Analysis
+              </h2>
+              <p class="text-lg text-gray-400 mb-8">
+                Identify the exact reasons why your applications fail. Our AI
+                performs a deep comparison between your resume and the target
+                job description.
+              </p>
+
+              <div class="space-y-6">
+                <!-- Step 1 -->
+                <div class="flex items-start space-x-4">
+                  <span
+                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-secondary-teal rounded-full"
+                    >1</span
+                  >
+                  <div>
+                    <h4 class="text-xl font-semibold text-white">
+                      ATS Compatibility Score
+                    </h4>
+                    <p class="text-gray-400">
+                      Ensure your document format won't get filtered out by
+                      Applicant Tracking Systems (ATS).
+                    </p>
+                  </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="flex items-start space-x-4">
+                  <span
+                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-secondary-teal rounded-full"
+                    >2</span
+                  >
+                  <div>
+                    <h4 class="text-xl font-semibold text-white">
+                      Keyword Density & Match
+                    </h4>
+                    <p class="text-gray-400">
+                      See which essential skills and terms are missing or
+                      underrepresented compared to the job posting.
+                    </p>
+                  </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="flex items-start space-x-4">
+                  <span
+                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-secondary-teal rounded-full"
+                    >3</span
+                  >
+                  <div>
+                    <h4 class="text-xl font-semibold text-white">
+                      Experience Gap Visualization
+                    </h4>
+                    <p class="text-gray-400">
+                      Receive specific, actionable edits to close the gap
+                      between your profile and the ideal candidate.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DYNAMIC UPLOAD/PROGRESS AREA -->
+            <div
+              class="order-1 md:order-2 mt-10 md:mt-0 p-8 bg-card-bg rounded-xl border border-white/10 text-left shadow-2xl"
+              id="resume-progress-display"
+            >
+              <!-- This content is dynamically rendered by JS -->
+              <!-- This is the default state (placeholder) -->
+              <div id="resume-placeholder" class="text-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="100"
+                  height="100"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-24 h-24 text-gray-500 mx-auto mb-4"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <path d="M14 2v6h6" />
+                  <path d="M8 15h2" />
+                  <path d="M8 19h8" />
+                  <path d="M12 11h4" />
+                </svg>
+                <p class="text-gray-400 italic mb-4">
+                  Upload your resume and job description to get started
+                </p>
+                <div class="space-y-4 mb-6">
+                  <button
+                    id="resume-upload-button"
+                    class="w-full bg-primary-blue hover:bg-primary-blue/90 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center space-x-2"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                      <path d="M14 2v6h6"/>
+                      <path d="M16 13H8"/>
+                      <path d="M16 17H8"/>
+                      <path d="M10 9H8"/>
+                    </svg>
+                    <span>Upload Resume</span>
+                  </button>
+                  <button
+                    id="jd-upload-button"
+                    class="w-full bg-secondary-teal hover:bg-secondary-teal/90 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center space-x-2"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                      <polyline points="14,2 14,8 20,8"/>
+                      <line x1="16" y1="13" x2="8" y2="13"/>
+                      <line x1="16" y1="17" x2="8" y2="17"/>
+                      <polyline points="10,9 9,9 8,9"/>
+                    </svg>
+                    <span>Upload Job Description</span>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-500">
+                  Supports PDF, DOC, DOCX, and TXT files
+                </p>
+              </div>
+
+              <!-- Enhanced Analysis Results Display -->
+              <div id="resume-progress-card" class="hidden">
+                <div class="flex justify-between items-center mb-6">
+                  <h3 class="text-2xl font-bold text-secondary-teal">
+                    Analysis Results
+                  </h3>
+                  <button
+                    id="resume-reupload-button"
+                    class="bg-primary-blue hover:bg-primary-blue/90 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-sm"
+                  >
+                    Upload New Files
+                  </button>
+                </div>
+
+                <!-- File Information -->
+                <div class="grid md:grid-cols-2 gap-4 mb-6">
+                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                    <p class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Resume File</p>
+                    <p id="resume-file-name" class="text-sm text-white font-semibold truncate">...</p>
+                  </div>
+                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                    <p class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Job Description</p>
+                    <p id="jd-file-name" class="text-sm text-white font-semibold truncate">...</p>
+                  </div>
+                </div>
+
+                <!-- Overall Score -->
+                <div class="bg-gradient-to-r from-primary-dark to-card-bg p-6 rounded-xl border border-secondary-teal/30 mb-6">
+                  <div class="flex justify-between items-center mb-3">
+                    <h4 class="text-lg font-bold text-white">Overall Match Score</h4>
+                    <span id="resume-score" class="text-3xl font-bold text-secondary-teal">0%</span>
+                  </div>
+                  <div class="w-full bg-primary-dark rounded-full h-3 border border-white/10">
+                    <div id="resume-progress-bar" class="progress-bar-inner bg-gradient-to-r from-secondary-teal to-primary-blue h-3 rounded-full" style="width: 0%"></div>
+                  </div>
+                  <p id="score-interpretation" class="text-sm text-gray-400 mt-2">...</p>
+                </div>
+
+                <!-- Detailed Analysis Breakdown -->
+                <div class="space-y-4">
+                  <!-- ATS Score -->
+                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                    <div class="flex justify-between items-center mb-2">
+                      <h5 class="font-semibold text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-green-400">
+                          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                        ATS Compatibility
+                      </h5>
+                      <span id="ats-score" class="text-green-400 font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                      <div id="ats-progress" class="bg-green-400 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <p id="ats-feedback" class="text-xs text-gray-400 mt-2">...</p>
+                  </div>
+
+                  <!-- Keyword Match -->
+                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                    <div class="flex justify-between items-center mb-2">
+                      <h5 class="font-semibold text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-blue-400">
+                          <circle cx="11" cy="11" r="8"/>
+                          <path d="M21 21l-4.35-4.35"/>
+                        </svg>
+                        Keyword Match
+                      </h5>
+                      <span id="keyword-score" class="text-blue-400 font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                      <div id="keyword-progress" class="bg-blue-400 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <p id="keyword-feedback" class="text-xs text-gray-400 mt-2">...</p>
+                  </div>
+
+                  <!-- Experience Match -->
+                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                    <div class="flex justify-between items-center mb-2">
+                      <h5 class="font-semibold text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-purple-400">
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                          <circle cx="9" cy="7" r="4"/>
+                          <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        Experience Relevance
+                      </h5>
+                      <span id="experience-score" class="text-purple-400 font-bold">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                      <div id="experience-progress" class="bg-purple-400 h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                    <p id="experience-feedback" class="text-xs text-gray-400 mt-2">...</p>
+                  </div>
+                </div>
+
+                <!-- Action Items -->
+                <div class="mt-6 p-4 bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-lg">
+                  <h5 class="font-bold text-orange-400 mb-3 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M12 2v20"/>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                    </svg>
+                    Key Recommendations
+                  </h5>
+                  <ul id="recommendations-list" class="space-y-2 text-sm text-gray-300">
+                    <!-- Dynamic recommendations will be inserted here -->
+                  </ul>
+                </div>
+
+                <!-- Analysis Timestamp -->
+                <div class="mt-4 text-center">
+                  <p class="text-xs text-gray-500">
+                    Last analyzed: <span id="resume-last-analyzed">...</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <input
+              type="file"
+              id="resume-file-input"
+              class="hidden"
+              accept=".pdf,.doc,.docx,.txt"
+            />
+            <input
+              type="file"
+              id="jd-file-input"
+              class="hidden"
+              accept=".pdf,.doc,.docx,.txt"
+            />
+          </div>
+        </div> <!-- End resume-analysis-content -->
+      </section>
+
+      <!-- Dashboard & Analytics Section -->
+      <section id="dashboard" class="py-20 md:py-28 bg-gradient-to-br from-primary-dark via-card-bg to-primary-dark">
+        <!-- Login Required Message -->
+        <div id="dashboard-login-required" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div class="bg-primary-dark p-12 rounded-2xl border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-secondary-teal">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+              <circle cx="12" cy="16" r="1"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <h3 class="text-2xl font-bold text-white mb-4">Login Required</h3>
+            <p class="text-gray-400 mb-6">Please sign up or log in to access your personalized analytics dashboard and skill gap analysis.</p>
+            <button id="dashboard-login-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white px-8 py-3 rounded-lg font-semibold transition">
+              Sign Up / Login
+            </button>
+          </div>
+        </div>
+        
+        <!-- Actual Dashboard Content (hidden by default) -->
+        <div id="dashboard-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 hidden">
+          <!-- Section Header -->
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-secondary-teal">
+              Analytics Dashboard
+            </h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+              "Not just answers, but analytics: job readiness made quantifiable." Track your progress, identify skill gaps, and see your improvement over time.
+            </p>
+          </div>
+
+          <!-- Dashboard Grid -->
+          <div class="grid lg:grid-cols-3 gap-8 mb-12">
+            <!-- Readiness Score Gauge -->
+            <div class="lg:col-span-1 bg-primary-dark p-8 rounded-2xl border border-white/10">
+              <div class="text-center mb-6">
+                <h3 class="text-xl font-bold text-white mb-2">Job Readiness Score</h3>
+                <p class="text-sm text-gray-400">Your current readiness for target roles</p>
+              </div>
+              <div class="relative h-64">
+                <canvas id="readinessScoreChart"></canvas>
+              </div>
+              <div class="mt-4 text-center">
+                <p class="text-sm text-gray-300">
+                  <span class="text-secondary-teal font-semibold">Standardized Score</span> across all job requirements
+                </p>
+              </div>
+            </div>
+
+            <!-- Skill Gap Analysis -->
+            <div class="lg:col-span-2 bg-primary-dark p-8 rounded-2xl border border-white/10">
+              <div class="flex justify-between items-center mb-6">
+                <div>
+                  <h3 class="text-xl font-bold text-white mb-2">Skill Gap Heatmap</h3>
+                  <p class="text-sm text-gray-400">From invisible to visible skill gaps</p>
+                </div>
+                <div class="text-right">
+                  <div class="text-xs text-gray-400 mb-1">Priority Areas</div>
+                  <div class="text-lg font-bold text-orange-400" id="critical-skill-count">No Critical Gaps</div>
+                </div>
+              </div>
+              <div class="h-64">
+                <canvas id="skillGapChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Tracking -->
+          <div class="grid gap-8 mb-12">
+            <!-- Progress Over Time -->
+            <div class="bg-primary-dark p-8 rounded-2xl border border-white/10">
+              <h3 class="text-xl font-bold text-white mb-2">Progress Over Time</h3>
+              <p class="text-sm text-gray-400 mb-6">Track skill development and measurable growth</p>
+              <div class="h-64">
+                <canvas id="progressChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skill Development Roadmap -->
+          <div class="bg-primary-dark p-8 rounded-2xl border border-white/10">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">Personalized Learning Roadmap</h3>
+                <p class="text-sm text-gray-400">Actionable steps tailored to your unique gaps</p>
+              </div>
+              <button id="generate-roadmap-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                Generate New Roadmap
+              </button>
+            </div>
+            
+            <!-- Roadmap Timeline -->
+            <div id="skillRoadmap" class="space-y-6">
+              <!-- Roadmap items will be dynamically generated based on actual resume analysis -->
+            </div>
+          </div>
+        </div> <!-- End dashboard-content -->
+      </section>
+
+      <!-- 5. Interview Prep Section -->
+      <section id="interview-prep" class="py-20 md:py-28 bg-card-bg border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Section Header -->
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-secondary-teal">
+              AI Interview Preparation
+            </h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+              Practice with realistic AI-powered interviews tailored to your target role. 
+              Get instant feedback and improve your performance.
+            </p>
+          </div>
+
+          <!-- Interview Practice Interface -->
+          <div id="interview-practice-container">
+            <!-- Practice Selection Screen -->
+            <div id="interview-selection-screen" class="max-w-4xl mx-auto">
+              <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <!-- Behavioral Questions -->
+                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 cursor-pointer interview-type-card"
+                     data-type="behavioral">
+                  <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                  </div>
+                  <h3 class="text-xl font-bold text-white mb-3">Behavioral Questions</h3>
+                  <p class="text-gray-400 text-sm">
+                    Practice STAR method responses for leadership, teamwork, and problem-solving scenarios.
+                  </p>
+                  <div class="mt-4 text-green-400 text-sm font-semibold">
+                    ⏱️ 15-20 minutes
+                  </div>
+                </div>
+
+                <!-- Technical Questions -->
+                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-primary-blue/50 cursor-pointer interview-type-card"
+                     data-type="technical">
+                  <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400">
+                      <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                      <line x1="8" y1="21" x2="16" y2="21"/>
+                      <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                  </div>
+                  <h3 class="text-xl font-bold text-white mb-3">Technical Questions</h3>
+                  <p class="text-gray-400 text-sm">
+                    Role-specific technical challenges and coding concepts based on the job requirements.
+                  </p>
+                  <div class="mt-4 text-blue-400 text-sm font-semibold">
+                    ⏱️ 20-30 minutes
+                  </div>
+                </div>
+
+                <!-- Situational Questions -->
+                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-purple-500/50 cursor-pointer interview-type-card"
+                     data-type="situational">
+                  <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400">
+                      <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                  </div>
+                  <h3 class="text-xl font-bold text-white mb-3">Situational Questions</h3>
+                  <p class="text-gray-400 text-sm">
+                    Hypothetical scenarios to assess decision-making and critical thinking skills.
+                  </p>
+                  <div class="mt-4 text-purple-400 text-sm font-semibold">
+                    ⏱️ 15-25 minutes
+                  </div>
+                </div>
+              </div>
+
+              <!-- Requirements Notice -->
+              <div class="bg-orange-500/10 border border-orange-500/20 rounded-xl p-6 text-center mb-8">
+                <div class="flex items-center justify-center mb-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-orange-400 mr-2">
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                    <path d="M12 9v4"/>
+                    <path d="M12 17h.01"/>
+                  </svg>
+                  <span class="text-orange-400 font-semibold">Prerequisites</span>
+                </div>
+                <p class="text-gray-300 text-sm">
+                  For the best experience, complete your resume analysis first. This helps our AI generate personalized questions based on your background and target role.
+                </p>
+              </div>
+
+              <!-- Start Full Interview Button -->
+              <div class="text-center">
+                <button
+                  id="start-full-interview-btn"
+                  class="bg-gradient-to-r from-secondary-teal to-primary-blue hover:from-secondary-teal/90 hover:to-primary-blue/90 text-white font-bold py-4 px-12 rounded-xl transition duration-300 shadow-lg shadow-secondary-teal/30 transform hover:scale-105"
+                >
+                  Start Complete Interview Practice
+                </button>
+                <p class="text-gray-500 text-sm mt-3">
+                  Comprehensive practice with all question types (45-60 minutes)
+                </p>
+              </div>
+            </div>
+
+            <!-- Interview Practice Interface -->
+            <div id="interview-practice-interface" class="hidden max-w-4xl mx-auto">
+              <!-- Interview Header -->
+              <div class="bg-primary-dark p-6 rounded-t-xl border border-white/10 border-b-0">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <h3 class="text-xl font-bold text-white" id="interview-type-title">Interview Practice</h3>
+                    <p class="text-gray-400 text-sm" id="interview-progress">Question 1 of 5</p>
+                  </div>
+                  <div class="flex items-center space-x-4">
+                    <div class="text-secondary-teal font-mono text-lg" id="interview-timer">00:00</div>
+                    <button id="end-interview-btn" class="text-red-400 hover:text-red-300 transition">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="6" y="4" width="4" height="16"/>
+                        <rect x="14" y="4" width="4" height="16"/>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Question Display -->
+              <div class="bg-card-bg p-8 border border-white/10 border-t-0 border-b-0">
+                <div class="mb-6">
+                  <div class="flex items-center mb-4">
+                    <div class="w-3 h-3 bg-secondary-teal rounded-full mr-3 animate-pulse"></div>
+                    <span class="text-secondary-teal font-semibold text-sm">AI INTERVIEWER</span>
+                  </div>
+                  <div id="current-question" class="text-lg text-white leading-relaxed bg-primary-dark p-6 rounded-lg border border-white/5">
+                    <!-- Dynamic question content -->
+                  </div>
+                </div>
+
+                <!-- Answer Recording Interface -->
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <label class="text-white font-semibold">Your Answer:</label>
+                    <div class="flex items-center space-x-3">
+                      <button id="voice-record-btn" class="flex items-center space-x-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition disabled:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                          <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                          <path d="M22 10v2a10 10 0 0 1-20 0v-2"/>
+                        </svg>
+                        <span id="record-btn-text">Record Answer</span>
+                      </button>
+                      <span class="text-gray-400 text-sm">or type below</span>
+                    </div>
+                  </div>
+                  
+                  <textarea
+                    id="text-answer"
+                    rows="6"
+                    class="w-full bg-primary-dark border border-white/10 rounded-lg p-4 text-white placeholder-gray-500 focus:border-secondary-teal focus:outline-none resize-none"
+                    placeholder="Type your answer here... (Use the STAR method for behavioral questions: Situation, Task, Action, Result)"
+                  ></textarea>
+
+                  <!-- Answer Controls -->
+                  <div class="flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                      <button id="skip-question-btn" class="text-gray-400 hover:text-gray-300 text-sm transition">
+                        Skip Question
+                      </button>
+                      <div class="text-gray-500 text-sm" id="answer-word-count">
+                        0 words
+                      </div>
+                    </div>
+                    <div class="space-x-3">
+                      <button id="prev-question-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition">
+                        Previous
+                      </button>
+                      <button id="next-question-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white font-semibold py-2 px-6 rounded-lg transition">
+                        Next Question
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Real-time Feedback Panel -->
+              <div class="bg-primary-dark p-6 rounded-b-xl border border-white/10 border-t-0">
+                <h4 class="text-white font-semibold mb-4 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-blue-400">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                  </svg>
+                  Real-time Feedback
+                </h4>
+                <div id="live-feedback" class="grid md:grid-cols-3 gap-4 text-sm">
+                  <div class="bg-card-bg p-3 rounded-lg border border-white/5">
+                    <div class="text-green-400 font-semibold mb-1">Clarity Score</div>
+                    <div class="flex items-center">
+                      <div class="w-full bg-gray-700 rounded-full h-2 mr-3">
+                        <div id="clarity-bar" class="bg-green-400 h-2 rounded-full" style="width: 0%"></div>
+                      </div>
+                      <span id="clarity-score" class="text-white font-mono">0%</span>
+                    </div>
+                  </div>
+                  <div class="bg-card-bg p-3 rounded-lg border border-white/5">
+                    <div class="text-blue-400 font-semibold mb-1">Structure</div>
+                    <div class="flex items-center">
+                      <div class="w-full bg-gray-700 rounded-full h-2 mr-3">
+                        <div id="structure-bar" class="bg-blue-400 h-2 rounded-full" style="width: 0%"></div>
+                      </div>
+                      <span id="structure-score" class="text-white font-mono">0%</span>
+                    </div>
+                  </div>
+                  <div class="bg-card-bg p-3 rounded-lg border border-white/5">
+                    <div class="text-purple-400 font-semibold mb-1">Confidence</div>
+                    <div class="flex items-center">
+                      <div class="w-full bg-gray-700 rounded-full h-2 mr-3">
+                        <div id="confidence-bar" class="bg-purple-400 h-2 rounded-full" style="width: 0%"></div>
+                      </div>
+                      <span id="confidence-score" class="text-white font-mono">0%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interview Results Screen -->
+            <div id="interview-results-screen" class="hidden max-w-5xl mx-auto">
+              <div class="text-center mb-12">
+                <div class="w-20 h-20 bg-secondary-teal/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary-teal">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <path d="M22 4L12 14.01l-3-3"/>
+                  </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-4">Interview Complete!</h2>
+                <p class="text-gray-400 text-lg">Here's your detailed performance analysis</p>
+              </div>
+
+              <!-- Results Dashboard -->
+              <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Overall Score Card -->
+                <div class="bg-gradient-to-r from-secondary-teal/20 to-primary-blue/20 p-8 rounded-2xl border border-secondary-teal/30">
+                  <h3 class="text-xl font-bold text-white mb-4">Overall Performance</h3>
+                  <div class="text-center">
+                    <div class="text-5xl font-bold text-secondary-teal mb-2" id="final-score">85%</div>
+                    <p class="text-gray-300" id="final-grade">Excellent Performance</p>
+                    <div class="w-full bg-primary-dark rounded-full h-3 mt-4">
+                      <div id="final-progress-bar" class="bg-gradient-to-r from-secondary-teal to-primary-blue h-3 rounded-full" style="width: 85%"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Time and Questions -->
+                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10">
+                  <h3 class="text-xl font-bold text-white mb-6">Session Summary</h3>
+                  <div class="space-y-4">
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Total Time:</span>
+                      <span class="text-white font-semibold" id="total-time">--</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Questions Answered:</span>
+                      <span class="text-white font-semibold" id="questions-answered">--</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Average Response Time:</span>
+                      <span class="text-white font-semibold" id="avg-response-time">--</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Interview Type:</span>
+                      <span class="text-white font-semibold" id="interview-type-summary">--</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detailed Analysis -->
+              <div id="detailed-analysis" class="space-y-6 mb-12">
+                <!-- Analysis content will be dynamically inserted -->
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex justify-center space-x-6">
+                <button id="practice-again-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white font-bold py-3 px-8 rounded-xl transition">
+                  Practice Again
+                </button>
+                <button id="view-transcript-btn" class="bg-primary-blue hover:bg-primary-blue/90 text-white font-bold py-3 px-8 rounded-xl transition">
+                  View Full Transcript
+                </button>
+                <button id="save-results-btn" class="border border-secondary-teal text-secondary-teal hover:bg-secondary-teal hover:text-white font-bold py-3 px-8 rounded-xl transition">
+                  Save Results
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Team Section -->
+      <section id="team" class="py-20 md:py-28 bg-primary-dark border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <!-- Section Header -->
+          <div class="text-center mb-16">
+            <span class="text-secondary-teal uppercase tracking-widest text-sm font-medium mb-3 block">Our Team</span>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">
+              Meet the JOB SYNC Creators
+            </h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+              A dedicated team of developers and innovators working to revolutionize the job search experience
+            </p>
+          </div>
+
+          <!-- Team Members Grid -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+            <!-- Team Member 1 - Praful kr. Singh -->
+            <div class="bg-card-bg p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-secondary-teal to-primary-blue rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                PS
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Praful kr. Singh</h3>
+              <p class="text-secondary-teal font-semibold mb-3">Lead Developer</p>
+              <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                Full-stack developer passionate about AI integration and user experience design. Specializes in React and backend architecture.
+              </p>
+              <div class="flex justify-center space-x-3">
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Team Member 2 - Preet Verma -->
+            <div class="bg-card-bg p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-primary-blue to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                PV
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Preet Verma</h3>
+              <p class="text-secondary-teal font-semibold mb-3">AI/ML Specialist</p>
+              <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                Machine learning engineer focused on natural language processing and recommendation systems. Expert in Python and TensorFlow.
+              </p>
+              <div class="flex justify-center space-x-3">
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Team Member 3 - Prince Barnwal -->
+            <div class="bg-card-bg p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-secondary-teal rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+                PB
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Prince Barnwal</h3>
+              <p class="text-secondary-teal font-semibold mb-3">Backend Engineer</p>
+              <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                Backend specialist with expertise in scalable systems, database optimization, and API development. Proficient in Node.js and cloud technologies.
+              </p>
+              <div class="flex justify-center space-x-3">
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Team Member 4 - Navneet Panwar (You!) -->
+            <div class="bg-gradient-to-br from-secondary-teal/20 to-primary-blue/20 p-8 rounded-2xl border border-secondary-teal/50 text-center transition duration-300 hover:border-secondary-teal hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-secondary-teal to-primary-blue rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg">
+                NP
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Navneet Panwar</h3>
+              <p class="text-secondary-teal font-semibold mb-3">Frontend Developer</p>
+              <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                Full-stack developer focused on crafting intuitive user experiences and translating ideas into polished product journeys.
+              </p>
+              <div class="flex justify-center space-x-3">
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                    <rect x="2" y="9" width="4" height="12"/>
+                    <circle cx="4" cy="4" r="2"/>
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Information -->
+          <div class="bg-gradient-to-r from-primary-dark to-card-bg p-8 rounded-2xl border border-white/10">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+              <div>
+                <h3 class="text-2xl font-bold text-white mb-4">About JOB SYNC</h3>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                  JOB SYNC is an innovative AI-powered platform designed to revolutionize the job search experience. 
+                  Our team combines expertise in machine learning, full-stack development, and user experience design 
+                  to create tools that help job seekers optimize their applications and ace their interviews.
+                </p>
+                <div class="flex items-center space-x-6">
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-secondary-teal">2025</div>
+                    <div class="text-gray-500 text-sm">Founded</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-secondary-teal">4</div>
+                    <div class="text-gray-500 text-sm">Team Members</div>
+                  </div>
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-secondary-teal">100%</div>
+                    <div class="text-gray-500 text-sm">AI-Powered</div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <div class="w-32 h-32 bg-gradient-to-br from-secondary-teal/20 to-primary-blue/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-teal/30">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary-teal">
+                    <path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                  </svg>
+                </div>
+                <p class="text-gray-400 text-sm italic">
+                  "Empowering careers through intelligent technology"
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. FAQ Section -->
+      <section
+        id="faq"
+        class="py-20 md:py-28 bg-primary-dark border-t border-white/10"
+      >
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
+            Frequently Asked Questions
+          </h2>
+
+          <div class="space-y-4">
+            <!-- FAQ Item 1 -->
+            <div class="rounded-xl bg-card-bg border border-white/10">
+              <button
+                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-primary-blue"
+                aria-expanded="false"
+                data-target="faq-1"
+              >
+                How does the AI rank my resume?
+                <span class="transform rotate-0 transition duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </button>
+              <div
+                id="faq-1"
+                class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out px-5"
+              >
+                <p class="pb-5 text-gray-400">
+                  Our proprietary algorithm compares the keywords, required
+                  skills, and experience length from the Job Description (JD) to
+                  your resume, providing an objective match score. It simulates
+                  the initial screening process used by hiring managers and ATS
+                  systems.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ Item 2 -->
+            <div class="rounded-xl bg-card-bg border border-white/10">
+              <button
+                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-primary-blue"
+                aria-expanded="false"
+                data-target="faq-2"
+              >
+                How realistic are the AI interview simulations?
+                <span class="transform rotate-0 transition duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </button>
+              <div
+                id="faq-2"
+                class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out px-5"
+              >
+                <p class="pb-5 text-gray-400">
+                  The simulations are highly realistic, utilizing advanced LLMs
+                  to create adaptive conversational flows. They don't just ask
+                  predefined questions; they respond to your answers, ask
+                  follow-ups, and even challenge your assumptions, mirroring a
+                  real-life interview dynamic.
+                </p>
+              </div>
+            </div>
+
+            <!-- FAQ Item 3 -->
+            <div class="rounded-xl bg-card-bg border border-white/10">
+              <button
+                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-primary-blue"
+                aria-expanded="false"
+                data-target="faq-3"
+              >
+                Is my data secure and private?
+                <span class="transform rotate-0 transition duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </span>
+              </button>
+              <div
+                id="faq-3"
+                class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out px-5"
+              >
+                <p class="pb-5 text-gray-400">
+                  Yes. We use industry-standard encryption and security
+                  protocols. Your resume and personal data are strictly used for
+                  analysis and training your personalized AI models and are
+                  never shared with third-party recruiters or companies.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary-dark border-t border-white/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <!-- Col 1: Logo & Mission -->
+          <div class="col-span-2 md:col-span-2">
+            <a
+              href="#"
+              class="text-2xl font-bold text-secondary-teal flex items-center mb-4 tracking-wide"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="w-6 h-6 mr-2"
+              >
+                <path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10z" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+              JOB SYNC
+            </a>
+            <p class="text-gray-400 text-sm">
+              AI-powered platform that uncovers career gaps, boosts job readiness,
+              and keeps candidates interview-ready with data-driven guidance.
+            </p>
+          </div>
+
+          <!-- Col 2: Quick Links -->
+          <div>
+            <h5 class="text-lg font-semibold mb-4 text-white">Quick Links</h5>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#features"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Features</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#testimonials"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Testimonials</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#resume-analysis"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Resume Analysis</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#interview-prep"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Interview Prep</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#faq"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >FAQ</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Legal -->
+          <div>
+            <h5 class="text-lg font-semibold mb-4 text-white">Legal</h5>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Privacy Policy</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Terms & Conditions</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 4: Contact -->
+          <div>
+            <h5 class="text-lg font-semibold mb-4 text-white">Follow</h5>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >LinkedIn</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary-blue transition"
+                  >Twitter/X</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="mt-12 pt-8 border-t border-white/10 text-center">
+          <p class="text-gray-500 text-sm">
+            &copy; 2025 JOB SYNC. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/database.js"></script>
+    <script src="js/voice-recognition.js"></script>
+    <script src="js/interview-system.js"></script>
+    <script src="js/dashboard-visualization.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+  // Initialize the JOB SYNC application
+      document.addEventListener('DOMContentLoaded', () => {
+        const app = new JobSyncApp();
+      });
+    </script>
+  </body>
+</html>
