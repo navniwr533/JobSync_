@@ -16,12 +16,14 @@
         theme: {
           extend: {
             colors: {
-              "primary-blue": "#3B82F6", // Friendly Blue
-              "primary-dark": "#0F172A", // Dark background
-              "secondary-teal": "#10B981", // Friendly Green
-              "card-bg": "#1E293B", // Card background
-              "accent-purple": "#8B5CF6", // Gentle Purple
-              "warm-orange": "#F59E0B", // Warm Orange
+              "purple-500": "#60A5FA", // Bright Sky Blue
+              "gray-800": "#1F2937", // Softer Dark Gray
+              "secondary-teal": "#34D399", // Bright Mint Green
+              "gray-700": "#374151", // Lighter Gray for cards
+              "accent-purple": "#A78BFA", // Bright Purple
+              "warm-orange": "#FBBF24", // Bright Yellow-Orange
+              "pink-fun": "#F472B6", // Fun Pink
+              "coral": "#FB7185", // Coral Pink
             },
             fontFamily: {
               sans: ["Inter", "sans-serif"],
@@ -63,7 +65,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(15, 23, 42, 0.9); /* primary-dark with transparency */
+        background: rgba(15, 23, 42, 0.9); /* gray-800 with transparency */
         z-index: 1000;
         display: none; /* Hidden by default */
         align-items: center;
@@ -93,17 +95,17 @@
       }
     </style>
   </head>
-  <body class="bg-primary-dark text-white font-sans antialiased">
+  <body class="bg-gray-800 text-white font-sans antialiased">
     <!-- Global Loading Overlay -->
     <div id="global-loading">
       <div class="spinner mb-4"></div>
-      <p id="loading-message" class="text-xl text-secondary-teal">
+      <p id="loading-message" class="text-xl text-pink-500">
         Initializing app...
       </p>
     </div>
 
     <!-- Super Friendly Welcome Banner -->
-    <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white py-3">
+    <div class="bg-gradient-to-r from-pink-400 to-purple-500 text-white py-3">
       <div class="max-w-7xl mx-auto px-4 text-center">
         <p class="text-sm">
           <strong>Welcome to JOB SYNC!</strong> Find out why you're not getting hired in just 3 clicks! 
@@ -114,7 +116,7 @@
 
     <!-- Navigation Bar -->
     <header
-      class="sticky top-0 z-50 bg-primary-dark/95 backdrop-blur-sm border-b border-white/10"
+      class="sticky top-0 z-50 bg-gray-800/95 backdrop-blur-sm border-b border-white/10"
     >
       <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
@@ -122,7 +124,7 @@
         <!-- Logo -->
         <a
           href="#"
-          class="text-2xl font-bold text-secondary-teal flex items-center tracking-wide"
+          class="text-2xl font-bold text-pink-500 flex items-center tracking-wide"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -144,35 +146,35 @@
 
         <!-- Desktop Links -->
         <nav class="hidden md:flex space-x-6 text-gray-300">
-          <a href="#features" class="hover:text-green-400 transition"
+          <a href="#features" class="hover:text-pink-400 transition"
             >Free Tools</a
           >
-          <a href="#resume-analysis" class="hover:text-green-400 transition"
+          <a href="#resume-analysis" class="hover:text-pink-400 transition"
             >Check Resume</a
           >
-          <a href="#dashboard" class="hover:text-green-400 transition"
+          <a href="#dashboard" class="hover:text-pink-400 transition"
             >Your Progress</a
           >
-          <a href="#interview-prep" class="hover:text-green-400 transition"
+          <a href="#interview-prep" class="hover:text-pink-400 transition"
             >Practice</a
           >
-          <a href="#team" class="hover:text-green-400 transition"
+          <a href="#team" class="hover:text-pink-400 transition"
             >Our Team</a
           >
-          <a href="#faq" class="hover:text-green-400 transition">Help</a>
+          <a href="#faq" class="hover:text-pink-400 transition">Help</a>
         </nav>
 
         <!-- Auth Controls (Login/Signup/Profile) -->
         <div id="auth-controls" class="hidden md:flex items-center space-x-4">
           <button
             id="login-button"
-            class="text-gray-300 hover:text-primary-blue transition font-semibold"
+            class="text-gray-300 hover:text-purple-500 transition font-semibold"
           >
             I Have Account
           </button>
           <button
             id="signup-button"
-            class="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-lg"
+            class="bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 shadow-lg"
           >
             Start Free
           </button>
@@ -182,11 +184,11 @@
         <div id="user-profile" class="hidden md:flex items-center space-x-4">
           <span
             id="user-display"
-            class="text-secondary-teal text-sm font-mono p-1 rounded-md bg-card-bg/50"
+            class="text-pink-500 text-sm font-mono p-1 rounded-md bg-gray-700/50"
           ></span>
           <button
             id="logout-button"
-            class="bg-card-bg hover:bg-white/10 text-white font-semibold py-1.5 px-3 rounded-lg border border-white/20 transition duration-300"
+            class="bg-gray-700 hover:bg-white/10 text-white font-semibold py-1.5 px-3 rounded-lg border border-white/20 transition duration-300"
           >
             Logout
           </button>
@@ -194,7 +196,7 @@
 
         <!-- Mobile Menu Button (Placeholder) -->
         <button
-          class="md:hidden text-gray-300 hover:text-primary-blue transition"
+          class="md:hidden text-gray-300 hover:text-purple-500 transition"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +226,7 @@
       <!-- Modal Content -->
       <div
         id="modal-content"
-        class="modal-transition bg-card-bg p-8 rounded-xl w-full max-w-md shadow-2xl border border-white/20 relative"
+        class="modal-transition bg-gray-700 p-8 rounded-xl w-full max-w-md shadow-2xl border border-white/20 relative"
       >
         <button
           id="close-modal"
@@ -247,7 +249,7 @@
         </button>
         <h3
           id="auth-title"
-          class="text-2xl font-bold mb-6 text-primary-blue text-center"
+          class="text-2xl font-bold mb-6 text-purple-500 text-center"
         >
           Login
         </h3>
@@ -267,7 +269,7 @@
             <input
               type="text"
               id="name"
-              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-white/10 focus:ring-purple-500 focus:border-purple-500 transition text-white"
               autocomplete="name"
             />
           </div>
@@ -282,7 +284,7 @@
               type="email"
               id="email"
               required
-              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-white/10 focus:ring-purple-500 focus:border-purple-500 transition text-white"
               autocomplete="email"
             />
           </div>
@@ -297,7 +299,7 @@
               type="password"
               id="password"
               required
-              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-white/10 focus:ring-purple-500 focus:border-purple-500 transition text-white"
               autocomplete="current-password"
             />
           </div>
@@ -312,7 +314,7 @@
             <input
               type="password"
               id="confirm-password"
-              class="w-full px-4 py-2 rounded-lg bg-primary-dark border border-white/10 focus:ring-primary-blue focus:border-primary-blue transition text-white"
+              class="w-full px-4 py-2 rounded-lg bg-gray-800 border border-white/10 focus:ring-purple-500 focus:border-purple-500 transition text-white"
               autocomplete="new-password"
             />
           </div>
@@ -323,23 +325,23 @@
               <input
                 type="checkbox"
                 id="terms"
-                class="mt-0.5 rounded border-white/10 bg-primary-dark text-secondary-teal focus:ring-secondary-teal"
+                class="mt-0.5 rounded border-white/10 bg-gray-800 text-pink-500 focus:ring-secondary-teal"
               />
-              <span>I agree to the <a href="#" class="text-secondary-teal hover:underline">Terms of Service</a> and <a href="#" class="text-secondary-teal hover:underline">Privacy Policy</a></span>
+              <span>I agree to the <a href="#" class="text-pink-500 hover:underline">Terms of Service</a> and <a href="#" class="text-pink-500 hover:underline">Privacy Policy</a></span>
             </label>
           </div>
           
           <button
             type="submit"
             id="auth-submit"
-            class="w-full bg-secondary-teal hover:bg-secondary-teal/90 text-white font-bold py-3 rounded-lg transition duration-300"
+            class="w-full bg-pink-500 hover:bg-pink-500/90 text-white font-bold py-3 rounded-lg transition duration-300"
           >
             Log In
           </button>
           <p class="text-center text-sm text-gray-400 mt-4">
             <span
               id="switch-auth-mode"
-              class="cursor-pointer text-primary-blue hover:text-primary-blue/80"
+              class="cursor-pointer text-purple-500 hover:text-purple-500/80"
             >
               Need an account? Sign Up
             </span>
@@ -352,18 +354,18 @@
     <main>
       <!-- 1. Hero Section -->
       <section
-        class="py-24 md:py-32 text-center bg-primary-dark border-b border-white/10"
+        class="py-24 md:py-32 text-center bg-gray-800 border-b border-white/10"
       >
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <span
-            class="text-secondary-teal uppercase tracking-[0.35em] text-sm font-medium mb-3 block"
+            class="text-pink-500 uppercase tracking-[0.35em] text-sm font-medium mb-3 block"
             >Introducing JOB SYNC</span
           >
           <h1
             class="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-tight mb-6"
           >
             Will You Get The Job?
-            <br><span class="text-green-400">Let's Find Out Together!</span>
+            <br><span class="text-pink-400">Let's Find Out Together!</span>
           </h1>
           <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
             Simply upload your resume and the job posting. We'll tell you exactly what to improve to get hired! No tech skills needed - just drag, drop, and discover!
@@ -373,13 +375,13 @@
           >
             <a
               href="#resume-analysis"
-              class="bg-green-500 hover:bg-green-600 text-white text-xl font-bold py-3 px-8 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-2xl"
+              class="bg-pink-500 hover:bg-pink-600 text-white text-xl font-bold py-3 px-8 rounded-xl transition duration-300 transform hover:scale-[1.02] shadow-2xl"
             >
               Check My Resume Now (Free!)
             </a>
             <a
               href="#features"
-              class="bg-blue-500 hover:bg-blue-600 text-white text-xl font-semibold py-3 px-8 rounded-xl transition duration-300 transform hover:scale-[1.02]"
+              class="bg-purple-500 hover:bg-purple-600 text-white text-xl font-semibold py-3 px-8 rounded-xl transition duration-300 transform hover:scale-[1.02]"
             >
               Show Me How It Works
             </a>
@@ -388,7 +390,7 @@
       </section>
 
       <!-- 2. Features Section -->
-      <section id="features" class="py-20 md:py-28 bg-primary-dark">
+      <section id="features" class="py-20 md:py-28 bg-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl sm:text-4xl font-bold text-center mb-4">
             What You Get (Completely Free!)
@@ -400,7 +402,7 @@
           <div class="grid md:grid-cols-3 gap-8">
             <!-- Feature Card 1 -->
             <div
-              class="bg-card-bg p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
+              class="bg-gray-700 p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -412,7 +414,7 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="w-10 h-10 text-secondary-teal mb-4"
+                class="w-10 h-10 text-pink-500 mb-4"
               >
                 <path d="M12 2v20" />
                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
@@ -427,7 +429,7 @@
 
             <!-- Feature Card 2 -->
             <div
-              class="bg-card-bg p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
+              class="bg-gray-700 p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -439,7 +441,7 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="w-10 h-10 text-primary-blue mb-4"
+                class="w-10 h-10 text-purple-500 mb-4"
               >
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                 <circle cx="9" cy="7" r="4" />
@@ -456,7 +458,7 @@
 
             <!-- Feature Card 3 -->
             <div
-              class="bg-card-bg p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
+              class="bg-gray-700 p-8 rounded-2xl shadow-xl border border-white/10 transition duration-300 card-hover"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -468,7 +470,7 @@
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="w-10 h-10 text-secondary-teal mb-4"
+                class="w-10 h-10 text-pink-500 mb-4"
               >
                 <path d="M2 12s3-4 8-4 5 10 9 2c-3 0-5.5-2-5.5-5" />
                 <path d="M12 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
@@ -488,11 +490,11 @@
       <!-- 3. Testimonials/Social Proof Section -->
       <section
         id="testimonials"
-        class="py-20 md:py-28 bg-card-bg border-t border-b border-white/10"
+        class="py-20 md:py-28 bg-gray-700 border-t border-b border-white/10"
       >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span
-            class="text-primary-blue uppercase tracking-widest text-sm font-medium mb-3 block"
+            class="text-purple-500 uppercase tracking-widest text-sm font-medium mb-3 block"
             >Success Stories</span
           >
           <h2 class="text-3xl sm:text-4xl font-bold mb-12">
@@ -502,20 +504,20 @@
           <div class="grid md:grid-cols-3 gap-8">
             <!-- Testimonial 1 -->
             <div
-              class="bg-primary-dark p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
+              class="bg-gray-800 p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
             >
               <p class="text-lg italic text-gray-300 mb-4">
                 "This tool saved me SO much time! I went from getting rejected to getting interviews in just 2 weeks!"
               </p>
               <div class="flex items-center justify-center">
                 <div
-                  class="w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-sm font-bold mr-3"
+                  class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold mr-3"
                 >
                   JD
                 </div>
                 <div>
                   <p class="font-semibold text-white">Jane Doe</p>
-                  <p class="text-sm text-secondary-teal">
+                  <p class="text-sm text-pink-500">
                     Product Manager, Google
                   </p>
                 </div>
@@ -524,7 +526,7 @@
 
             <!-- Testimonial 2 -->
             <div
-              class="bg-primary-dark p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
+              class="bg-gray-800 p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
             >
               <p class="text-lg italic text-gray-300 mb-4">
                 "The AI interview practice is terrifyingly real. It helped me
@@ -532,13 +534,13 @@
               </p>
               <div class="flex items-center justify-center">
                 <div
-                  class="w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-sm font-bold mr-3"
+                  class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold mr-3"
                 >
                   MK
                 </div>
                 <div>
                   <p class="font-semibold text-white">Mike K.</p>
-                  <p class="text-sm text-secondary-teal">
+                  <p class="text-sm text-pink-500">
                     Software Engineer, Amazon
                   </p>
                 </div>
@@ -547,7 +549,7 @@
 
             <!-- Testimonial 3 -->
             <div
-              class="bg-primary-dark p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
+              class="bg-gray-800 p-6 rounded-xl shadow-lg border border-secondary-teal/30 hover:shadow-secondary-teal/20 transition duration-300 transform hover:scale-[1.03]"
             >
               <p class="text-lg italic text-gray-300 mb-4">
                 "Worth every penny. The JD mapping report is like getting the
@@ -555,13 +557,13 @@
               </p>
               <div class="flex items-center justify-center">
                 <div
-                  class="w-10 h-10 bg-primary-blue rounded-full flex items-center justify-center text-sm font-bold mr-3"
+                  class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-sm font-bold mr-3"
                 >
                   AW
                 </div>
                 <div>
                   <p class="font-semibold text-white">Alice W.</p>
-                  <p class="text-sm text-secondary-teal">
+                  <p class="text-sm text-pink-500">
                     Data Scientist, Tesla
                   </p>
                 </div>
@@ -574,13 +576,13 @@
       <!-- 4. Resume Analysis Section (NOW DYNAMIC) -->
       <section
         id="resume-analysis"
-        class="py-20 md:py-28 bg-primary-dark border-t border-white/10"
+        class="py-20 md:py-28 bg-gray-800 border-t border-white/10"
       >
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <!-- Login Required Message for Resume Analysis -->
           <div id="resume-login-required" class="text-center mb-16">
-            <div class="bg-card-bg p-12 rounded-2xl border border-white/10">
-              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-primary-blue">
+            <div class="bg-gray-700 p-12 rounded-2xl border border-white/10">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-purple-500">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14,2 14,8 20,8"/>
                 <line x1="16" y1="13" x2="8" y2="13"/>
@@ -589,7 +591,7 @@
               </svg>
               <h3 class="text-2xl font-bold text-white mb-4">Ready to Check Your Resume?</h3>
               <p class="text-gray-400 mb-6">Create a free account and see if your resume will get you hired! Takes less than 30 seconds ⏰</p>
-              <button id="resume-login-btn" class="bg-primary-blue hover:bg-primary-blue/90 text-white px-8 py-3 rounded-lg font-semibold transition">
+              <button id="resume-login-btn" class="bg-purple-500 hover:bg-purple-500/90 text-white px-8 py-3 rounded-lg font-semibold transition">
                 Start Free Analysis
               </button>
             </div>
@@ -599,7 +601,7 @@
           <div id="resume-analysis-content" class="hidden">
           <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
             <div class="order-2 md:order-1">
-              <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-primary-blue">
+              <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-purple-500">
                 Your Resume Report Card
               </h2>
               <p class="text-lg text-gray-400 mb-8">
@@ -610,7 +612,7 @@
                 <!-- Step 1 -->
                 <div class="flex items-start space-x-4">
                   <span
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-secondary-teal rounded-full"
+                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-pink-500 rounded-full"
                     >1</span
                   >
                   <div>
@@ -625,7 +627,7 @@
                 <!-- Step 2 -->
                 <div class="flex items-start space-x-4">
                   <span
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-secondary-teal rounded-full"
+                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-pink-500 rounded-full"
                     >2</span
                   >
                   <div>
@@ -640,7 +642,7 @@
                 <!-- Step 3 -->
                 <div class="flex items-start space-x-4">
                   <span
-                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-secondary-teal rounded-full"
+                    class="flex-shrink-0 w-10 h-10 flex items-center justify-center text-lg font-bold bg-pink-500 rounded-full"
                     >3</span
                   >
                   <div>
@@ -657,7 +659,7 @@
 
             <!-- DYNAMIC UPLOAD/PROGRESS AREA -->
             <div
-              class="order-1 md:order-2 mt-10 md:mt-0 p-8 bg-card-bg rounded-xl border border-white/10 text-left shadow-2xl"
+              class="order-1 md:order-2 mt-10 md:mt-0 p-8 bg-gray-700 rounded-xl border border-white/10 text-left shadow-2xl"
               id="resume-progress-display"
             >
               <!-- This content is dynamically rendered by JS -->
@@ -691,7 +693,7 @@
                 <div class="space-y-4 mb-6">
                   <button
                     id="resume-upload-button"
-                    class="w-full bg-primary-blue hover:bg-primary-blue/90 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center space-x-2"
+                    class="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center space-x-2"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
@@ -704,7 +706,7 @@
                   </button>
                   <button
                     id="jd-upload-button"
-                    class="w-full bg-secondary-teal hover:bg-secondary-teal/90 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center space-x-2"
+                    class="w-full bg-green-400 hover:bg-green-500 text-black font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center space-x-2"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
@@ -724,12 +726,12 @@
               <!-- Enhanced Analysis Results Display -->
               <div id="resume-progress-card" class="hidden">
                 <div class="flex justify-between items-center mb-6">
-                  <h3 class="text-2xl font-bold text-secondary-teal">
+                  <h3 class="text-2xl font-bold text-pink-500">
                     🎉 Your Results Are Ready!
                   </h3>
                   <button
                     id="resume-reupload-button"
-                    class="bg-primary-blue hover:bg-primary-blue/90 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-sm"
+                    class="bg-purple-500 hover:bg-purple-500/90 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 text-sm"
                   >
                     🔄 Try Another Job
                   </button>
@@ -737,24 +739,24 @@
 
                 <!-- File Information -->
                 <div class="grid md:grid-cols-2 gap-4 mb-6">
-                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                  <div class="bg-gray-800 p-4 rounded-lg border border-white/5">
                     <p class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Resume File</p>
                     <p id="resume-file-name" class="text-sm text-white font-semibold truncate">...</p>
                   </div>
-                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                  <div class="bg-gray-800 p-4 rounded-lg border border-white/5">
                     <p class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Job Description</p>
                     <p id="jd-file-name" class="text-sm text-white font-semibold truncate">...</p>
                   </div>
                 </div>
 
                 <!-- Overall Score -->
-                <div class="bg-gradient-to-r from-primary-dark to-card-bg p-6 rounded-xl border border-secondary-teal/30 mb-6">
+                <div class="bg-gradient-to-r from-gray-800 to-gray-700 p-6 rounded-xl border border-secondary-teal/30 mb-6">
                   <div class="flex justify-between items-center mb-3">
                     <h4 class="text-lg font-bold text-white">🏆 Your Job Match Score</h4>
-                    <span id="resume-score" class="text-3xl font-bold text-secondary-teal">0%</span>
+                    <span id="resume-score" class="text-3xl font-bold text-pink-500">0%</span>
                   </div>
-                  <div class="w-full bg-primary-dark rounded-full h-3 border border-white/10">
-                    <div id="resume-progress-bar" class="progress-bar-inner bg-gradient-to-r from-secondary-teal to-primary-blue h-3 rounded-full" style="width: 0%"></div>
+                  <div class="w-full bg-gray-800 rounded-full h-3 border border-white/10">
+                    <div id="resume-progress-bar" class="progress-bar-inner bg-gradient-to-r from-secondary-teal to-purple-500 h-3 rounded-full" style="width: 0%"></div>
                   </div>
                   <p id="score-interpretation" class="text-sm text-gray-400 mt-2">...</p>
                 </div>
@@ -762,7 +764,7 @@
                 <!-- Detailed Analysis Breakdown -->
                 <div class="space-y-4">
                   <!-- ATS Score -->
-                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                  <div class="bg-gray-800 p-4 rounded-lg border border-white/5">
                     <div class="flex justify-between items-center mb-2">
                       <h5 class="font-semibold text-white flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-green-400">
@@ -779,7 +781,7 @@
                   </div>
 
                   <!-- Keyword Match -->
-                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                  <div class="bg-gray-800 p-4 rounded-lg border border-white/5">
                     <div class="flex justify-between items-center mb-2">
                       <h5 class="font-semibold text-white flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-blue-400">
@@ -797,7 +799,7 @@
                   </div>
 
                   <!-- Experience Match -->
-                  <div class="bg-primary-dark p-4 rounded-lg border border-white/5">
+                  <div class="bg-gray-800 p-4 rounded-lg border border-white/5">
                     <div class="flex justify-between items-center mb-2">
                       <h5 class="font-semibold text-white flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-purple-400">
@@ -856,18 +858,18 @@
       </section>
 
       <!-- Dashboard & Analytics Section -->
-      <section id="dashboard" class="py-20 md:py-28 bg-gradient-to-br from-primary-dark via-card-bg to-primary-dark">
+      <section id="dashboard" class="py-20 md:py-28 bg-gradient-to-br from-gray-800 via-gray-700 to-gray-800">
         <!-- Login Required Message -->
         <div id="dashboard-login-required" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div class="bg-primary-dark p-12 rounded-2xl border border-white/10">
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-secondary-teal">
+          <div class="bg-gray-800 p-12 rounded-2xl border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-6 text-pink-500">
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
               <circle cx="12" cy="16" r="1"/>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
             </svg>
             <h3 class="text-2xl font-bold text-white mb-4">🔐 Your Personal Dashboard Awaits!</h3>
             <p class="text-gray-400 mb-6">Create a free account to see your progress charts, skill gaps, and get your personal improvement plan! 📊</p>
-            <button id="dashboard-login-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white px-8 py-3 rounded-lg font-semibold transition">
+            <button id="dashboard-login-btn" class="bg-pink-500 hover:bg-pink-500/90 text-white px-8 py-3 rounded-lg font-semibold transition">
               🎯 See My Progress
             </button>
           </div>
@@ -877,7 +879,7 @@
         <div id="dashboard-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 hidden">
           <!-- Section Header -->
           <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-secondary-teal">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-pink-500">
               📊 Your Personal Progress Dashboard
             </h2>
             <p class="text-xl text-gray-400 max-w-3xl mx-auto">
@@ -888,7 +890,7 @@
           <!-- Dashboard Grid -->
           <div class="grid lg:grid-cols-3 gap-8 mb-12">
             <!-- Readiness Score Gauge -->
-            <div class="lg:col-span-1 bg-primary-dark p-8 rounded-2xl border border-white/10">
+            <div class="lg:col-span-1 bg-gray-800 p-8 rounded-2xl border border-white/10">
               <div class="text-center mb-6">
                 <h3 class="text-xl font-bold text-white mb-2">🏆 How Ready Are You?</h3>
                 <p class="text-sm text-gray-400">Your score for landing this job</p>
@@ -898,13 +900,13 @@
               </div>
               <div class="mt-4 text-center">
                 <p class="text-sm text-gray-300">
-                  <span class="text-secondary-teal font-semibold">🎯 Your Overall Score</span> compared to perfect candidate
+                  <span class="text-pink-500 font-semibold">🎯 Your Overall Score</span> compared to perfect candidate
                 </p>
               </div>
             </div>
 
             <!-- Skill Gap Analysis -->
-            <div class="lg:col-span-2 bg-primary-dark p-8 rounded-2xl border border-white/10">
+            <div class="lg:col-span-2 bg-gray-800 p-8 rounded-2xl border border-white/10">
               <div class="flex justify-between items-center mb-6">
                 <div>
                   <h3 class="text-xl font-bold text-white mb-2">Skill Gap Heatmap</h3>
@@ -924,7 +926,7 @@
           <!-- Progress Tracking -->
           <div class="grid gap-8 mb-12">
             <!-- Progress Over Time -->
-            <div class="bg-primary-dark p-8 rounded-2xl border border-white/10">
+            <div class="bg-gray-800 p-8 rounded-2xl border border-white/10">
               <h3 class="text-xl font-bold text-white mb-2">Progress Over Time</h3>
               <p class="text-sm text-gray-400 mb-6">Track skill development and measurable growth</p>
               <div class="h-64">
@@ -934,13 +936,13 @@
           </div>
 
           <!-- Skill Development Roadmap -->
-          <div class="bg-primary-dark p-8 rounded-2xl border border-white/10">
+          <div class="bg-gray-800 p-8 rounded-2xl border border-white/10">
             <div class="flex justify-between items-center mb-6">
               <div>
                 <h3 class="text-xl font-bold text-white mb-2">Personalized Learning Roadmap</h3>
                 <p class="text-sm text-gray-400">Actionable steps tailored to your unique gaps</p>
               </div>
-              <button id="generate-roadmap-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+              <button id="generate-roadmap-btn" class="bg-pink-500 hover:bg-pink-500/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
                 Generate New Roadmap
               </button>
             </div>
@@ -954,11 +956,11 @@
       </section>
 
       <!-- 5. Interview Prep Section -->
-      <section id="interview-prep" class="py-20 md:py-28 bg-card-bg border-t border-white/10">
+      <section id="interview-prep" class="py-20 md:py-28 bg-gray-700 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <!-- Section Header -->
           <div class="text-center mb-16">
-            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-secondary-teal">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-pink-500">
               AI Interview Preparation
             </h2>
             <p class="text-xl text-gray-400 max-w-3xl mx-auto">
@@ -973,7 +975,7 @@
             <div id="interview-selection-screen" class="max-w-4xl mx-auto">
               <div class="grid md:grid-cols-3 gap-8 mb-12">
                 <!-- Behavioral Questions -->
-                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 cursor-pointer interview-type-card"
+                <div class="bg-gray-800 p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 cursor-pointer interview-type-card"
                      data-type="behavioral">
                   <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400">
@@ -993,7 +995,7 @@
                 </div>
 
                 <!-- Technical Questions -->
-                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-primary-blue/50 cursor-pointer interview-type-card"
+                <div class="bg-gray-800 p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-purple-500/50 cursor-pointer interview-type-card"
                      data-type="technical">
                   <div class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400">
@@ -1012,7 +1014,7 @@
                 </div>
 
                 <!-- Situational Questions -->
-                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-purple-500/50 cursor-pointer interview-type-card"
+                <div class="bg-gray-800 p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-purple-500/50 cursor-pointer interview-type-card"
                      data-type="situational">
                   <div class="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-purple-400">
@@ -1048,7 +1050,7 @@
               <div class="text-center">
                 <button
                   id="start-full-interview-btn"
-                  class="bg-gradient-to-r from-secondary-teal to-primary-blue hover:from-secondary-teal/90 hover:to-primary-blue/90 text-white font-bold py-4 px-12 rounded-xl transition duration-300 shadow-lg shadow-secondary-teal/30 transform hover:scale-105"
+                  class="bg-gradient-to-r from-secondary-teal to-purple-500 hover:from-secondary-teal/90 hover:to-purple-500/90 text-white font-bold py-4 px-12 rounded-xl transition duration-300 shadow-lg shadow-secondary-teal/30 transform hover:scale-105"
                 >
                   Start Complete Interview Practice
                 </button>
@@ -1061,14 +1063,14 @@
             <!-- Interview Practice Interface -->
             <div id="interview-practice-interface" class="hidden max-w-4xl mx-auto">
               <!-- Interview Header -->
-              <div class="bg-primary-dark p-6 rounded-t-xl border border-white/10 border-b-0">
+              <div class="bg-gray-800 p-6 rounded-t-xl border border-white/10 border-b-0">
                 <div class="flex justify-between items-center">
                   <div>
                     <h3 class="text-xl font-bold text-white" id="interview-type-title">Interview Practice</h3>
                     <p class="text-gray-400 text-sm" id="interview-progress">Question 1 of 5</p>
                   </div>
                   <div class="flex items-center space-x-4">
-                    <div class="text-secondary-teal font-mono text-lg" id="interview-timer">00:00</div>
+                    <div class="text-pink-500 font-mono text-lg" id="interview-timer">00:00</div>
                     <button id="end-interview-btn" class="text-red-400 hover:text-red-300 transition">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="6" y="4" width="4" height="16"/>
@@ -1080,13 +1082,13 @@
               </div>
 
               <!-- Question Display -->
-              <div class="bg-card-bg p-8 border border-white/10 border-t-0 border-b-0">
+              <div class="bg-gray-700 p-8 border border-white/10 border-t-0 border-b-0">
                 <div class="mb-6">
                   <div class="flex items-center mb-4">
-                    <div class="w-3 h-3 bg-secondary-teal rounded-full mr-3 animate-pulse"></div>
-                    <span class="text-secondary-teal font-semibold text-sm">AI INTERVIEWER</span>
+                    <div class="w-3 h-3 bg-pink-500 rounded-full mr-3 animate-pulse"></div>
+                    <span class="text-pink-500 font-semibold text-sm">AI INTERVIEWER</span>
                   </div>
-                  <div id="current-question" class="text-lg text-white leading-relaxed bg-primary-dark p-6 rounded-lg border border-white/5">
+                  <div id="current-question" class="text-lg text-white leading-relaxed bg-gray-800 p-6 rounded-lg border border-white/5">
                     <!-- Dynamic question content -->
                   </div>
                 </div>
@@ -1111,7 +1113,7 @@
                   <textarea
                     id="text-answer"
                     rows="6"
-                    class="w-full bg-primary-dark border border-white/10 rounded-lg p-4 text-white placeholder-gray-500 focus:border-secondary-teal focus:outline-none resize-none"
+                    class="w-full bg-gray-800 border border-white/10 rounded-lg p-4 text-white placeholder-gray-500 focus:border-secondary-teal focus:outline-none resize-none"
                     placeholder="Type your answer here... (Use the STAR method for behavioral questions: Situation, Task, Action, Result)"
                   ></textarea>
 
@@ -1129,7 +1131,7 @@
                       <button id="prev-question-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition">
                         Previous
                       </button>
-                      <button id="next-question-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white font-semibold py-2 px-6 rounded-lg transition">
+                      <button id="next-question-btn" class="bg-pink-500 hover:bg-pink-500/90 text-white font-semibold py-2 px-6 rounded-lg transition">
                         Next Question
                       </button>
                     </div>
@@ -1138,7 +1140,7 @@
               </div>
 
               <!-- Real-time Feedback Panel -->
-              <div class="bg-primary-dark p-6 rounded-b-xl border border-white/10 border-t-0">
+              <div class="bg-gray-800 p-6 rounded-b-xl border border-white/10 border-t-0">
                 <h4 class="text-white font-semibold mb-4 flex items-center">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-blue-400">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
@@ -1146,7 +1148,7 @@
                   Real-time Feedback
                 </h4>
                 <div id="live-feedback" class="grid md:grid-cols-3 gap-4 text-sm">
-                  <div class="bg-card-bg p-3 rounded-lg border border-white/5">
+                  <div class="bg-gray-700 p-3 rounded-lg border border-white/5">
                     <div class="text-green-400 font-semibold mb-1">Clarity Score</div>
                     <div class="flex items-center">
                       <div class="w-full bg-gray-700 rounded-full h-2 mr-3">
@@ -1155,7 +1157,7 @@
                       <span id="clarity-score" class="text-white font-mono">0%</span>
                     </div>
                   </div>
-                  <div class="bg-card-bg p-3 rounded-lg border border-white/5">
+                  <div class="bg-gray-700 p-3 rounded-lg border border-white/5">
                     <div class="text-blue-400 font-semibold mb-1">Structure</div>
                     <div class="flex items-center">
                       <div class="w-full bg-gray-700 rounded-full h-2 mr-3">
@@ -1164,7 +1166,7 @@
                       <span id="structure-score" class="text-white font-mono">0%</span>
                     </div>
                   </div>
-                  <div class="bg-card-bg p-3 rounded-lg border border-white/5">
+                  <div class="bg-gray-700 p-3 rounded-lg border border-white/5">
                     <div class="text-purple-400 font-semibold mb-1">Confidence</div>
                     <div class="flex items-center">
                       <div class="w-full bg-gray-700 rounded-full h-2 mr-3">
@@ -1180,8 +1182,8 @@
             <!-- Interview Results Screen -->
             <div id="interview-results-screen" class="hidden max-w-5xl mx-auto">
               <div class="text-center mb-12">
-                <div class="w-20 h-20 bg-secondary-teal/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary-teal">
+                <div class="w-20 h-20 bg-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                     <path d="M22 4L12 14.01l-3-3"/>
                   </svg>
@@ -1193,19 +1195,19 @@
               <!-- Results Dashboard -->
               <div class="grid md:grid-cols-2 gap-8 mb-12">
                 <!-- Overall Score Card -->
-                <div class="bg-gradient-to-r from-secondary-teal/20 to-primary-blue/20 p-8 rounded-2xl border border-secondary-teal/30">
+                <div class="bg-gradient-to-r from-secondary-teal/20 to-purple-500/20 p-8 rounded-2xl border border-secondary-teal/30">
                   <h3 class="text-xl font-bold text-white mb-4">Overall Performance</h3>
                   <div class="text-center">
-                    <div class="text-5xl font-bold text-secondary-teal mb-2" id="final-score">85%</div>
+                    <div class="text-5xl font-bold text-pink-500 mb-2" id="final-score">85%</div>
                     <p class="text-gray-300" id="final-grade">Excellent Performance</p>
-                    <div class="w-full bg-primary-dark rounded-full h-3 mt-4">
-                      <div id="final-progress-bar" class="bg-gradient-to-r from-secondary-teal to-primary-blue h-3 rounded-full" style="width: 85%"></div>
+                    <div class="w-full bg-gray-800 rounded-full h-3 mt-4">
+                      <div id="final-progress-bar" class="bg-gradient-to-r from-secondary-teal to-purple-500 h-3 rounded-full" style="width: 85%"></div>
                     </div>
                   </div>
                 </div>
 
                 <!-- Time and Questions -->
-                <div class="bg-primary-dark p-8 rounded-2xl border border-white/10">
+                <div class="bg-gray-800 p-8 rounded-2xl border border-white/10">
                   <h3 class="text-xl font-bold text-white mb-6">Session Summary</h3>
                   <div class="space-y-4">
                     <div class="flex justify-between">
@@ -1235,13 +1237,13 @@
 
               <!-- Action Buttons -->
               <div class="flex justify-center space-x-6">
-                <button id="practice-again-btn" class="bg-secondary-teal hover:bg-secondary-teal/90 text-white font-bold py-3 px-8 rounded-xl transition">
+                <button id="practice-again-btn" class="bg-pink-500 hover:bg-pink-500/90 text-white font-bold py-3 px-8 rounded-xl transition">
                   Practice Again
                 </button>
-                <button id="view-transcript-btn" class="bg-primary-blue hover:bg-primary-blue/90 text-white font-bold py-3 px-8 rounded-xl transition">
+                <button id="view-transcript-btn" class="bg-purple-500 hover:bg-purple-500/90 text-white font-bold py-3 px-8 rounded-xl transition">
                   View Full Transcript
                 </button>
-                <button id="save-results-btn" class="border border-secondary-teal text-secondary-teal hover:bg-secondary-teal hover:text-white font-bold py-3 px-8 rounded-xl transition">
+                <button id="save-results-btn" class="border border-secondary-teal text-pink-500 hover:bg-pink-500 hover:text-white font-bold py-3 px-8 rounded-xl transition">
                   Save Results
                 </button>
               </div>
@@ -1251,11 +1253,11 @@
       </section>
 
       <!-- 6. Team Section -->
-      <section id="team" class="py-20 md:py-28 bg-primary-dark border-t border-white/10">
+      <section id="team" class="py-20 md:py-28 bg-gray-800 border-t border-white/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <!-- Section Header -->
           <div class="text-center mb-16">
-            <span class="text-secondary-teal uppercase tracking-widest text-sm font-medium mb-3 block">Our Team</span>
+            <span class="text-pink-500 uppercase tracking-widest text-sm font-medium mb-3 block">Our Team</span>
             <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-white">
               Meet the JOB SYNC Creators
             </h2>
@@ -1267,29 +1269,29 @@
           <!-- Team Members Grid -->
           <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
             <!-- Team Member 1 - Praful kr. Singh -->
-            <div class="bg-card-bg p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
-              <div class="w-24 h-24 bg-gradient-to-br from-secondary-teal to-primary-blue rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+            <div class="bg-gray-700 p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-secondary-teal to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
                 PS
               </div>
               <h3 class="text-xl font-bold text-white mb-2">Praful kr. Singh</h3>
-              <p class="text-secondary-teal font-semibold mb-3">Frontend Developer</p>
+              <p class="text-pink-500 font-semibold mb-3">Frontend Developer</p>
               <p class="text-gray-400 text-sm leading-relaxed mb-4">
                 Designing and building student and recruiter dashboards using <strong>React + TailwindCSS</strong>. 
                 Integrating charts & visualizations (<strong>Chart.js</strong>) for readiness scores and gap heatmaps.
               </p>
-              <div class="bg-primary-dark/50 p-3 rounded-lg mb-4">
+              <div class="bg-gray-800/50 p-3 rounded-lg mb-4">
                 <div class="text-xs text-gray-300 font-semibold mb-1">Tech Stack:</div>
-                <div class="text-xs text-secondary-teal">React • TailwindCSS • Chart.js</div>
+                <div class="text-xs text-pink-500">React • TailwindCSS • Chart.js</div>
               </div>
               <div class="flex justify-center space-x-3">
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                     <rect x="2" y="9" width="4" height="12"/>
                     <circle cx="4" cy="4" r="2"/>
                   </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                   </svg>
@@ -1298,29 +1300,29 @@
             </div>
 
             <!-- Team Member 2 - Preet Verma -->
-            <div class="bg-card-bg p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
-              <div class="w-24 h-24 bg-gradient-to-br from-primary-blue to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
+            <div class="bg-gray-700 p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-purple-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
                 PV
               </div>
               <h3 class="text-xl font-bold text-white mb-2">Preet Verma</h3>
-              <p class="text-secondary-teal font-semibold mb-3">Database Engineer</p>
+              <p class="text-pink-500 font-semibold mb-3">Database Engineer</p>
               <p class="text-gray-400 text-sm leading-relaxed mb-4">
                 Handling data storage and system integration. Designing schemas using <strong>MongoDB (with Mongoose)</strong>. 
                 Managing student profiles and ensuring data consistency across the platform.
               </p>
-              <div class="bg-primary-dark/50 p-3 rounded-lg mb-4">
+              <div class="bg-gray-800/50 p-3 rounded-lg mb-4">
                 <div class="text-xs text-gray-300 font-semibold mb-1">Tech Stack:</div>
-                <div class="text-xs text-secondary-teal">MongoDB • Mongoose • Database Design</div>
+                <div class="text-xs text-pink-500">MongoDB • Mongoose • Database Design</div>
               </div>
               <div class="flex justify-center space-x-3">
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                     <rect x="2" y="9" width="4" height="12"/>
                     <circle cx="4" cy="4" r="2"/>
                   </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                   </svg>
@@ -1329,29 +1331,29 @@
             </div>
 
             <!-- Team Member 3 - Prince Barnwal -->
-            <div class="bg-card-bg p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
+            <div class="bg-gray-700 p-8 rounded-2xl border border-white/10 text-center transition duration-300 hover:border-secondary-teal/50 hover:transform hover:scale-105">
               <div class="w-24 h-24 bg-gradient-to-br from-green-500 to-secondary-teal rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold">
                 PB
               </div>
               <h3 class="text-xl font-bold text-white mb-2">Prince Barnwal</h3>
-              <p class="text-secondary-teal font-semibold mb-3">Backend Engineer</p>
+              <p class="text-pink-500 font-semibold mb-3">Backend Engineer</p>
               <p class="text-gray-400 text-sm leading-relaxed mb-4">
                 Creating server-side logic and APIs. Setting up <strong>Node.js + Express.js</strong> backend. 
                 Building REST APIs for student resume upload, readiness score fetch, and progress tracking.
               </p>
-              <div class="bg-primary-dark/50 p-3 rounded-lg mb-4">
+              <div class="bg-gray-800/50 p-3 rounded-lg mb-4">
                 <div class="text-xs text-gray-300 font-semibold mb-1">Tech Stack:</div>
-                <div class="text-xs text-secondary-teal">Node.js • Express.js • REST APIs</div>
+                <div class="text-xs text-pink-500">Node.js • Express.js • REST APIs</div>
               </div>
               <div class="flex justify-center space-x-3">
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                     <rect x="2" y="9" width="4" height="12"/>
                     <circle cx="4" cy="4" r="2"/>
                   </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                   </svg>
@@ -1360,29 +1362,29 @@
             </div>
 
             <!-- Team Member 4 - Navneet Panwar (You!) -->
-            <div class="bg-gradient-to-br from-secondary-teal/20 to-primary-blue/20 p-8 rounded-2xl border border-secondary-teal/50 text-center transition duration-300 hover:border-secondary-teal hover:transform hover:scale-105">
-              <div class="w-24 h-24 bg-gradient-to-br from-secondary-teal to-primary-blue rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg">
+            <div class="bg-gradient-to-br from-secondary-teal/20 to-purple-500/20 p-8 rounded-2xl border border-secondary-teal/50 text-center transition duration-300 hover:border-secondary-teal hover:transform hover:scale-105">
+              <div class="w-24 h-24 bg-gradient-to-br from-secondary-teal to-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 text-white text-2xl font-bold shadow-lg">
                 NP
               </div>
               <h3 class="text-xl font-bold text-white mb-2">Navneet Panwar</h3>
-              <p class="text-secondary-teal font-semibold mb-3">AI Integration & DevOps</p>
+              <p class="text-pink-500 font-semibold mb-3">AI Integration & DevOps</p>
               <p class="text-gray-400 text-sm leading-relaxed mb-4">
                 Integrating AI-powered analysis and ensuring project deployment. Connecting backend with AI. 
                 Designing AI prompts to extract skill gaps and readiness scores effectively. Handling deployment.
               </p>
-              <div class="bg-primary-dark/50 p-3 rounded-lg mb-4">
+              <div class="bg-gray-800/50 p-3 rounded-lg mb-4">
                 <div class="text-xs text-gray-300 font-semibold mb-1">Tech Stack:</div>
-                <div class="text-xs text-secondary-teal">AI Integration • DevOps • Deployment</div>
+                <div class="text-xs text-pink-500">AI Integration • DevOps • Deployment</div>
               </div>
               <div class="flex justify-center space-x-3">
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                     <rect x="2" y="9" width="4" height="12"/>
                     <circle cx="4" cy="4" r="2"/>
                   </svg>
                 </a>
-                <a href="#" class="text-gray-400 hover:text-secondary-teal transition">
+                <a href="#" class="text-gray-400 hover:text-pink-500 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                   </svg>
@@ -1392,7 +1394,7 @@
           </div>
 
           <!-- Project Information -->
-          <div class="bg-gradient-to-r from-primary-dark to-card-bg p-8 rounded-2xl border border-white/10">
+          <div class="bg-gradient-to-r from-gray-800 to-gray-700 p-8 rounded-2xl border border-white/10">
             <div class="grid md:grid-cols-2 gap-8 items-center">
               <div>
                 <h3 class="text-2xl font-bold text-white mb-4">About JOB SYNC</h3>
@@ -1404,40 +1406,40 @@
                 </p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div class="text-center">
-                    <div class="text-lg font-bold text-secondary-teal">React</div>
+                    <div class="text-lg font-bold text-pink-500">React</div>
                     <div class="text-gray-500 text-xs">Frontend</div>
                   </div>
                   <div class="text-center">
-                    <div class="text-lg font-bold text-secondary-teal">Node.js</div>
+                    <div class="text-lg font-bold text-pink-500">Node.js</div>
                     <div class="text-gray-500 text-xs">Backend</div>
                   </div>
                   <div class="text-center">
-                    <div class="text-lg font-bold text-secondary-teal">MongoDB</div>
+                    <div class="text-lg font-bold text-pink-500">MongoDB</div>
                     <div class="text-gray-500 text-xs">Database</div>
                   </div>
                   <div class="text-center">
-                    <div class="text-lg font-bold text-secondary-teal">AI</div>
+                    <div class="text-lg font-bold text-pink-500">AI</div>
                     <div class="text-gray-500 text-xs">Analysis</div>
                   </div>
                 </div>
                 <div class="flex items-center space-x-6">
                   <div class="text-center">
-                    <div class="text-2xl font-bold text-secondary-teal">2025</div>
+                    <div class="text-2xl font-bold text-pink-500">2025</div>
                     <div class="text-gray-500 text-sm">Founded</div>
                   </div>
                   <div class="text-center">
-                    <div class="text-2xl font-bold text-secondary-teal">4</div>
+                    <div class="text-2xl font-bold text-pink-500">4</div>
                     <div class="text-gray-500 text-sm">Team Members</div>
                   </div>
                   <div class="text-center">
-                    <div class="text-2xl font-bold text-secondary-teal">100%</div>
+                    <div class="text-2xl font-bold text-pink-500">100%</div>
                     <div class="text-gray-500 text-sm">Open Source</div>
                   </div>
                 </div>
               </div>
               <div class="text-center">
-                <div class="w-32 h-32 bg-gradient-to-br from-secondary-teal/20 to-primary-blue/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-teal/30">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-secondary-teal">
+                <div class="w-32 h-32 bg-gradient-to-br from-secondary-teal/20 to-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-secondary-teal/30">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-pink-500">
                     <path d="M12 22s-8-4-8-10V5l8-3 8 3v7c0 6-8 10-8 10z"/>
                     <path d="m9 12 2 2 4-4"/>
                   </svg>
@@ -1454,7 +1456,7 @@
       <!-- 7. FAQ Section -->
       <section
         id="faq"
-        class="py-20 md:py-28 bg-primary-dark border-t border-white/10"
+        class="py-20 md:py-28 bg-gray-800 border-t border-white/10"
       >
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-3xl sm:text-4xl font-bold text-center mb-12">
@@ -1463,9 +1465,9 @@
 
           <div class="space-y-4">
             <!-- FAQ Item 1 -->
-            <div class="rounded-xl bg-card-bg border border-white/10">
+            <div class="rounded-xl bg-gray-700 border border-white/10">
               <button
-                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-primary-blue"
+                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-purple-500"
                 aria-expanded="false"
                 data-target="faq-1"
               >
@@ -1501,9 +1503,9 @@
             </div>
 
             <!-- FAQ Item 2 -->
-            <div class="rounded-xl bg-card-bg border border-white/10">
+            <div class="rounded-xl bg-gray-700 border border-white/10">
               <button
-                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-primary-blue"
+                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-purple-500"
                 aria-expanded="false"
                 data-target="faq-2"
               >
@@ -1539,9 +1541,9 @@
             </div>
 
             <!-- FAQ Item 3 -->
-            <div class="rounded-xl bg-card-bg border border-white/10">
+            <div class="rounded-xl bg-gray-700 border border-white/10">
               <button
-                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-primary-blue"
+                class="faq-toggle w-full flex justify-between items-center p-5 text-lg font-semibold text-left transition duration-300 hover:text-purple-500"
                 aria-expanded="false"
                 data-target="faq-3"
               >
@@ -1580,14 +1582,14 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-primary-dark border-t border-white/10">
+    <footer class="bg-gray-800 border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
           <!-- Col 1: Logo & Mission -->
           <div class="col-span-2 md:col-span-2">
             <a
               href="#"
-              class="text-2xl font-bold text-secondary-teal flex items-center mb-4 tracking-wide"
+              class="text-2xl font-bold text-pink-500 flex items-center mb-4 tracking-wide"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -1619,35 +1621,35 @@
               <li>
                 <a
                   href="#features"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Features</a
                 >
               </li>
               <li>
                 <a
                   href="#testimonials"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Testimonials</a
                 >
               </li>
               <li>
                 <a
                   href="#resume-analysis"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Resume Analysis</a
                 >
               </li>
               <li>
                 <a
                   href="#interview-prep"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Interview Prep</a
                 >
               </li>
               <li>
                 <a
                   href="#faq"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >FAQ</a
                 >
               </li>
@@ -1661,21 +1663,21 @@
               <li>
                 <a
                   href="#"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Privacy Policy</a
                 >
               </li>
               <li>
                 <a
                   href="#"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Terms & Conditions</a
                 >
               </li>
               <li>
                 <a
                   href="#"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Contact</a
                 >
               </li>
@@ -1689,14 +1691,14 @@
               <li>
                 <a
                   href="#"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >LinkedIn</a
                 >
               </li>
               <li>
                 <a
                   href="#"
-                  class="text-gray-400 hover:text-primary-blue transition"
+                  class="text-gray-400 hover:text-purple-500 transition"
                   >Twitter/X</a
                 >
               </li>
